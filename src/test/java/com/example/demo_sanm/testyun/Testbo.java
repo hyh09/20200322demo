@@ -1,17 +1,14 @@
 package com.example.demo_sanm.testyun;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.chinatelecom.bo.flowchg.cardettyalter.CommReponseBo;
-import com.chinatelecom.prov.strongAssetOrder.checkObject.impl.StrongMssOverallPo;
-import com.example.demo_sanm.contro.rubo.AssetsCardItems;
-import com.example.demo_sanm.contro.rubo.PhysicalIds;
-import com.example.demo_sanm.contro.rubo.StrongMssChekbo;
-import org.apache.commons.collections.list.PredicatedList;
+import com.example.demo_sanm.contro.excel.ErorerBo;
+import com.example.demo_sanm.interfacesvc.ColumnConfig;
+import com.example.demo_sanm.interfacesvc.TableConFiG;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,121 +18,157 @@ import java.util.List;
  * @创建时间: on 2020/3/10.
  * @by: DELL)
  */
+
 public class Testbo {
 
 
 
-    @Test
-    public  void md5test(){
-       String pass = md5("45000644@GX");
-       System.out.println("====>"+pass);
-    }
+    Logger  logger = Logger.getLogger(getClass());
 
-    private String md5(String plainText) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(plainText.getBytes());
-            byte b[] = md.digest();
-            int i;
-            StringBuffer buf = new StringBuffer("");
-            for (int offset = 0; offset < b.length; offset++) {
-                i = b[offset];
-                if (i < 0) i += 256;
-                if (i < 16)
-                    buf.append("0");
-                buf.append(Integer.toHexString(i));
-            }
-            return buf.toString();
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("md5加密异常：" + e.getMessage());
-        }
-        return null;
-    }
 
 
     @Test
-    public  void Test1222(){
-       String ZzZclb="4";
-        List<String> zclbs = new ArrayList <>();
-        zclbs.add("1");
-        zclbs.add("2");
-        zclbs.add("3");
-        int i = 0;
-        for (String zclb : zclbs) {
+    public  void md5test() throws NoSuchFieldException {
+        ErorerBo erorerBo1  = new   ErorerBo("code1","name1");
+        ErorerBo erorerBo2  = new   ErorerBo("code2","name2");
+        List<ErorerBo> erorerBoList = new ArrayList <>();
 
-            if (!ZzZclb.equals(zclb)) {
-                i++;
+
+
+        List<List<Object>> rows = new ArrayList();
+        erorerBoList.add(erorerBo1);
+        erorerBoList.add(erorerBo2);
+        List <Object> objectList =new ArrayList <>();
+
+
+        toSheet2(erorerBo1,objectList);
+
+
+        rows.add(objectList);
+
+        toSheet(erorerBoList,rows);
+
+
+
+
+    }
+
+
+    public <T> void toSheet(List<T> beans,List<List<Object>> rows) {
+
+
+        for(T bean : beans) {
+            Class<?> beanType = bean.getClass();
+            Field[] fields = beanType.getDeclaredFields();
+            logger.debug("fields"+fields);
+            Field field = null;
+
+            List<Object> objectList = new ArrayList <>();
+            for (int i = 0; i < fields.length; i++) {
+
+                field = fields[i];
+
+
+                if( beanType.isMemberClass()  && "this$0".equals(field.getName())) continue;
+                // 外部类的this属性判断
+                if(field.getType().getSimpleName().equals(bean.getClass().getSimpleName())) {
+                    // 如果是this属性就取下一个字段； 此类判断对内部类无法生效
+                    continue;
+                }
+                // 如果是static字段，取下一个字段
+
+                if(Modifier.isStatic(field.getModifiers())) {
+                    continue;
+                }
+                field.setAccessible(true);
+                try {
+                    objectList.add(field.get(bean));
+                 //   rows.add(objectList);
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
             }
+          rows.add(objectList);
         }
-        if (i == zclbs.size()) {
-            System.out.println("作业成本资产类别与资产目录"+ZzZclb+"===>"+i);
-          //  return new CommReponseBo(false, "【作业成本资产类别与资产目录、资产归属关系匹配错误】");
-            // stringBuilder.append("," + eeOrderitemAssetdetail.getOsszseq() + ":作业成本资产类别与资产目录、资产归属关系匹配错误");
+        System.out.println("====》"+rows);
+    }
+
+
+
+
+    public <T> void toSheet2(T beans,List <Object> objectList ) {
+        // List <Object> objectList = new ArrayList <>();
+        Class <?> beanType = beans.getClass();
+        Field[] fields = beanType.getDeclaredFields();
+        logger.debug("fields" + fields);
+        Field field = null;
+        for (int i = 0; i < fields.length; i++) {
+            //   List <Object> objectList = new ArrayList <>();
+            field = fields[i];
+            if (field.isAnnotationPresent(ColumnConfig.class)) {
+                for (Annotation anno : field.getDeclaredAnnotations()) {
+                    logger.info("所有注解" + anno);
+                    if (anno.annotationType().equals(ColumnConfig.class)) {
+                        String str = ((ColumnConfig) anno).descriptionyun();
+                        logger.info("====>" + str);
+                        objectList.add(str);
+                    }
+                }
+
+            }
+
         }
     }
+
+
+
+    public   <T> String  toSheet29999(T beans ) {
+
+        Class <?> beanType = beans.getClass();
+        TableConFiG tableConFiG = beanType.getAnnotation(TableConFiG.class);
+        String str= tableConFiG.value();
+        logger.info("===>"+str);
+
+//        Field[] fields = beanType.getFields();
+//        logger.info("fields" + fields);
+//        Field field = null;
+//        for (int i = 0; i < fields.length; i++) {
+//            //   List <Object> objectList = new ArrayList <>();
+//            field = fields[i];
+//            if (field.isAnnotationPresent(TableConFiG.class)) {
+//                for (Annotation anno : field.getDeclaredAnnotations()) {
+//                    logger.info("所有注解" + anno);
+//                    if (anno.annotationType().equals(TableConFiG.class)) {
+//                         str = ((TableConFiG) anno).value();
+//                        logger.info("====>" + str);
+//
+//                    }
+//                }
+//
+//            }
+//
+//        }
+
+        return str;
+
+    }
+
 
 
     @Test
     public  void Test1(){
-        StrongMssChekbo strongMssChekbo = new StrongMssChekbo();
-        strongMssChekbo.setAppSystemId("100001");//应用系统ID
-        strongMssChekbo.setUserId("sunwuk@123");
-        strongMssChekbo.setPassword("123");//密码
-        strongMssChekbo.setProcessCode("zc_tc_bf");//
-        strongMssChekbo.setInstanceId("8a0c988364bdd340016541f3eb4438c3");//流程
-        strongMssChekbo.setOrgCode("2713010115");//orgCode
-        strongMssChekbo.setEndMark("1");//结束
-        strongMssChekbo.setOrgName("网络运营部");//发起组织名称
-        strongMssChekbo.setAppDate("2019-01-01");//申请日期 必填
-        strongMssChekbo.setAccount("13020359@HE"); //发起人账号
-        strongMssChekbo.setPrincipalName("张秀君");
-        strongMssChekbo.setMoveOut("2713010115");//调出部门
-        strongMssChekbo.setMoveIn("2713010039");
-        strongMssChekbo.setSapCompanyName("B003"); //sapCompanyName
-        strongMssChekbo.setReason("模拟数据");
-        strongMssChekbo.setNote("备注2020.03.10");
-        strongMssChekbo.setAssetsCardItems(getListAssetsCardItems());
+        ErorerBo erorerBo1  = new   ErorerBo();
 
-        String json= JSON.toJSONString(strongMssChekbo);
-        System.out.println(json);
+        // 反射获得 class
 
-        StrongMssChekbo chekbo1 = JSONArray.parseObject(json, StrongMssChekbo.class);
 
-        StrongMssOverallPo mssOverallPo = JSONArray.parseObject(json, StrongMssOverallPo.class);
-        System.out.println("A参:"+chekbo1);
-
-         System.out.println("入参:"+mssOverallPo);
-
-        /**
-         * 将
-         */
+        String  str= toSheet29999(erorerBo1);
+        System.out.println("str"+str);
     }
 
 
 
-  public  List<AssetsCardItems>  getListAssetsCardItems(){
-        List<AssetsCardItems>  assetsCardItems = new ArrayList <>();
-        AssetsCardItems  a1  = new AssetsCardItems();
-        a1.setAssetsCardCode("000016797196");
-        a1.setBukrs("A001");
-      List <PhysicalIds> physicalIdsList  = new ArrayList <>();
-      physicalIdsList.add(new PhysicalIds("131000000000004244617656"));
-      physicalIdsList.add(new PhysicalIds("1310000000000042446176566"));
 
-
-        a1.setPhysicalIds(physicalIdsList);
-
-
-      AssetsCardItems  a2  = new AssetsCardItems();
-      a2.setAssetsCardCode("000016797199");
-      a2.setBukrs("A002");
-      List <PhysicalIds> physicalIdsList1 = new ArrayList <>();
-      physicalIdsList1.add(new PhysicalIds("131000000000004244617009"));
-      a2.setPhysicalIds(physicalIdsList1);
-
-        assetsCardItems.add(a2);
-        assetsCardItems.add(a1);
-
-      return  assetsCardItems;
-    }
 }
