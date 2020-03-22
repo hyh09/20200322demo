@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:cache="http://www.springframework.org/schema/cache"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:lang="http://www.springframework.org/schema/lang"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	   xmlns:c="http://www.springframework.org/schema/c"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+	<dubbo:application name="GMAR-STDSVC-RPCSVR"
+					   owner="RES-NGRMS" organization="USTC"
+					   version="v1.0.0"/>
+
+	<!--
+		zookeeper://127.0.0.1:12181
+		zookeeper://10.20.153.10:2181?backup=10.20.153.11:2181,10.20.153.12:2181
+	-->
+	<!--gxg测试-->
+	<!--<dubbo:registry  address="zookeeper://10.128.90.55:12179"   file="./gmarsvc_dubcache/dubbo.cache"/>-->
+
+	<!--黑龙江-->
+	<!--<dubbo:registry  address="zookeeper://10.128.90.60:12301"   file="./gmarsvc_dubcache/dubbo.cache"/>-->
+
+	<dubbo:registry  address="zookeeper://10.128.75.118:12181"
+	client="curator" username="smrh_zk_gq" password="A#mdf+2706=ttw"/>
+
+
+
+	<dubbo:reference interface="com.chinatelecom.grp.svc.flowchg.MssCardResRelaUpateSvc"
+				   id="mssCardResRelaUpateSvcImpl" version="v1.0.0" group="ustc-server" timeout="1200000"/>
+
+	<dubbo:reference interface="com.sinovate.ngrms.gcbuapp.abl.gcodemix.svc.trafixast.AblAssetDetailSvc"
+					 id="ablAssetDetailSvcImpl" version="v1.0.0" group="ustc-server" timeout="1200000"/>
+
+	<dubbo:reference interface="com.chinatelecom.grp.svc.flowchg.CardBillStatuQrySvc"
+					 id="cardBillStatuQrySvcImpl" version="v1.0.0" group="ustc-server" timeout="1200000"/>
+
+
+	<dubbo:reference interface="com.sinovate.ngrms.gcbuapp.abl.gcodemix.svc.intqry.FieldCheck"
+					 id="fieldCheckImpI" version="v1.0.0" group="ustc-server-proxy"  timeout="1200000"/>
+
+	<dubbo:reference interface="com.sinovate.ngrms.gcbuapp.abl.gcodemix.svc.intqry.StrongRelatinCheckSvc"
+				   id="strongRelatinCheckImpI" version="v1.0.0" group="ustc-server-proxy"  timeout="1200000"/>
+
+
+</beans>
