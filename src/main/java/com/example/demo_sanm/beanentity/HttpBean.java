@@ -5,6 +5,12 @@ package com.example.demo_sanm.beanentity;
  * @创建人：hu.yunhui
  * @创建时间: on 2020/3/16.
  * @by: DELL)
+ *
+ *
+ *
+ *
+ *
+ *
  */
 public class HttpBean {
 
