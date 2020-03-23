@@ -1,23 +1,33 @@
 package com.example.demo_sanm.yunexcel;
 
+
+import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.example.demo_sanm.interfacesvc.ColumnConfig;
+import com.example.demo_sanm.interfacesvc.TableConFiG;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFBorderFormatting;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.directwebremoting.io.FileTransfer;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @单位名称：科大国创—电信资源事业部
@@ -26,7 +36,8 @@ import java.util.Date;
  * @by: DELL)
  * 用于Excel信息封装
  */
-public class ExportExcelyunUtils {
+@Service
+public class ExportExcelyunUtils implements  ExportExcelyunSvc{
 
     private static Logger logger  = Logger.getLogger(ExportExcelyunUtils.class);
 
@@ -42,33 +53,37 @@ public class ExportExcelyunUtils {
     }
 
 
-
     /**
      *
      * @param response
      * @param fileName
-     * @param data  数据
+     * @param voList
+     * @param beans
+     * @param <T>
+     * @return
      * @throws Exception
      */
-    public static FileTransfer exportExcel(HttpServletResponse response, String fileName, ExcelData data) throws Exception {
-//        // 告诉浏览器用什么软件可以打开此文件
-//        response.setHeader("content-Type", "application/vnd.ms-excel");
-//        // 下载文件的默认名称
-//        //中文乱码的问题,稍后处理
-//        response.setHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode(fileName, "utf-8"));
-//        exportExcel(data, response.getOutputStream());
-
-        // 告诉浏览器用什么软件可以打开此文件
+    public   <T> FileTransfer exportExcel(HttpServletResponse response, String fileName,List<T> voList , T beans) throws Exception {
+        ExcelData  data  =new ExcelData();
+        String tablename =gettableNamebyBean(beans);
+        data.setTableName(tablename);
+        List <Object> objectList =new ArrayList<Object>();
+        getFiledsbyBean(beans,objectList);
+        String[] strings = new String[objectList.size()];
+        data.setFields(objectList.toArray(strings));//第二行标题
+        List<List<Object>> rows = new ArrayList <List <Object>>();
+        if(CollectionUtils.isNotEmpty(voList)){
+            torows(voList,rows);
+        }
+        data.setRows(rows);
         response.setHeader("content-Type", "application/vnd.ms-excel");
         response.setContentType("application/octet-stream;charset=utf-8");
         response.setCharacterEncoding("UTF-8");
-        // 下载文件的默认名称
         response.addHeader("Content-Disposition", "attachment; filename="+new String(fileName.getBytes("gbk"),"iso-8859-1"));
-        //response.setHeader("Content-Disposition", "attachment;filename="+URLEncoder.encode(fileName, "utf-8"));
-      byte[] bos1=  exportExcel(data);
-        return new FileTransfer("1.xls", "application/msexcel", bos1);
+        byte[] bos1=  exportExcel(data);
+        return new FileTransfer(fileName+".xls", "application/msexcel", bos1);
 
-}
+    }
 
 
 
@@ -90,20 +105,20 @@ public class ExportExcelyunUtils {
             HSSFSheet sheet = wb.createSheet(sheetName);
             writeExcel(wb, sheet, data);//
             wb.write(bos);
-         //   byte[] bos1 = bos.toByteArray();
-          //  return  bos1;
+            //   byte[] bos1 = bos.toByteArray();
+            //  return  bos1;
 
             logger.info("写入临时日志!");
-}catch (Exception e){
-        logger.error("异常信息"+e);
+        }catch (Exception e){
+            logger.error("异常信息"+e);
         }
 //        } finally {
 //            wb.close();
 //        }
         return  bos.toByteArray();
-        }
+    }
 
-private static void writeExcel(HSSFWorkbook wb, Sheet sheet, ExcelData data) {
+    private static void writeExcel(HSSFWorkbook wb, Sheet sheet, ExcelData data) {
 //         logger.info("======开始写入======");
         int rowIndex = 0;
         rowIndex = writeFieldsDateToExcel(wb, sheet, data);//
@@ -113,7 +128,7 @@ private static void writeExcel(HSSFWorkbook wb, Sheet sheet, ExcelData data) {
         //写入数据
         writeRowsToExcel(wb, sheet, data.getRows(), rowIndex);
         autoSizeColumns(sheet, data.getFields().length + 1);
-        }
+    }
 
     private  static  int writeTableNameToExcel(HSSFWorkbook wb, Sheet sheet, ExcelData data){
 
@@ -123,7 +138,7 @@ private static void writeExcel(HSSFWorkbook wb, Sheet sheet, ExcelData data) {
 
         Font titleFont = wb.createFont();
         titleFont.setFontName("simsun");
-       // titleFont.setBold(true);
+        // titleFont.setBold(true);
         titleFont.setFontHeightInPoints((short) 22);
         titleFont.setColor(IndexedColors.GREY_80_PERCENT.index);
 
@@ -134,7 +149,7 @@ private static void writeExcel(HSSFWorkbook wb, Sheet sheet, ExcelData data) {
         //垂直居中
         boderStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
         boderStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
-            //设置一个边框
+        //设置一个边框
         boderStyle.setBorderTop(HSSFBorderFormatting.BORDER_THICK);
         boderStyle.setFont(titleFont);
 
@@ -163,7 +178,7 @@ private static void writeExcel(HSSFWorkbook wb, Sheet sheet, ExcelData data) {
 
         Font titleFont = wb.createFont();
         titleFont.setFontName("simsun");
-       // titleFont.setBold(true);
+        // titleFont.setBold(true);
         // titleFont.setFontHeightInPoints((short) 14);
         titleFont.setColor(IndexedColors.BLACK.index);
 
@@ -274,6 +289,83 @@ private static void writeExcel(HSSFWorkbook wb, Sheet sheet, ExcelData data) {
 
     }
 
+
+
+    private static   <T> String  gettableNamebyBean(T beans) {
+        Class <?> beanType = beans.getClass();
+        TableConFiG tableConFiG = beanType.getAnnotation(TableConFiG.class);
+        String str= tableConFiG.value();
+        logger.info("===>"+str);
+        return str;
+
+    }
+
+    public static  <T> void getFiledsbyBean(T beans,List<Object> objectList ) {
+        // List <Object> objectList = new ArrayList <>();
+        Class <?> beanType = beans.getClass();
+        Field[] fields = beanType.getDeclaredFields();
+        logger.debug("fields" + fields);
+        Field field = null;
+        for (int i = 0; i < fields.length; i++) {
+            //   List <Object> objectList = new ArrayList <>();
+            field = fields[i];
+            if (field.isAnnotationPresent(ColumnConfig.class)) {
+                for (Annotation anno : field.getDeclaredAnnotations()) {
+                    logger.info("所有注解" + anno);
+                    if (anno.annotationType().equals(ColumnConfig.class)) {
+                        String str = ((ColumnConfig) anno).descriptionyun();
+                        logger.debug("====>" + str);
+                        objectList.add(str);
+                    }
+                }
+
+            }
+
+        }
+    }
+
+
+
+    public  static  <T> void torows(List<T> beans,List<List<Object>> rows) {
+
+
+        for(T bean : beans) {
+            Class<?> beanType = bean.getClass();
+            Field[] fields = beanType.getDeclaredFields();
+            logger.debug("fields"+fields);
+            Field field = null;
+
+            List<Object> objectList = new ArrayList <Object>();
+            for (int i = 0; i < fields.length; i++) {
+
+                field = fields[i];
+
+
+                if( beanType.isMemberClass()  && "this$0".equals(field.getName())) continue;
+                // 外部类的this属性判断
+                if(field.getType().getSimpleName().equals(bean.getClass().getSimpleName())) {
+                    // 如果是this属性就取下一个字段； 此类判断对内部类无法生效
+                    continue;
+                }
+                // 如果是static字段，取下一个字段
+
+                if(Modifier.isStatic(field.getModifiers())) {
+                    continue;
+                }
+                field.setAccessible(true);
+                try {
+                    objectList.add(field.get(bean));
+                    //   rows.add(objectList);
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            rows.add(objectList);
+        }
+        System.out.println("====》"+rows);
+    }
 
 
 }
