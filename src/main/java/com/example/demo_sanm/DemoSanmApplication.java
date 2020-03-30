@@ -1,6 +1,7 @@
 package com.example.demo_sanm;
 
 import org.directwebremoting.spring.DwrSpringServlet;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -14,6 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Controller
 @SpringBootApplication
 @EnableSwagger2
+//@MapperScan("com.example.demo_sanm.*")
 @ImportResource(locations = "classpath:spring.xml")
 public class DemoSanmApplication {
 

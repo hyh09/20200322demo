@@ -108,5 +108,22 @@ update   DM_STAFF   dm  set  dm.PASSWORD='9eb133f6a3921b1af47eedb7ba87c86a' wher
 
 
 
+-----------------交资
+
+	   select t1.OSSZSEQ   from EM_ORDERITEM t0
+JOIN EE_ORDERITEM_ASSETDETAIL t1
+ON t0.ID = t1.ORDERITEM_ID
+and t0.SPEC_ID=3020100010
+and  t1.IS_BACK_DATA=0--setIsBackData
+and t0.ORDER_ID='450000070000000000172871';
 
 
+
+select *  from  MM_SPEC_ATTRIBUTE  ms  where  ms.table_code='EE_ORDERITEM_ASSETDETAIL'
+
+
+--and  ms.name like '%转固%'
+ and  ms.name in (
+  '所在地点','基站(机房)编码','基站(机房)名称','使用部门','使用人','保管员','成本中心',
+  '区县分公司','支局','营业厅机构ID','OSS转固资产序号'
+)

@@ -1,0 +1,990 @@
+Option Explicit
+Public col%, r1
+
+
+Private Sub TextBox11_Change()
+
+End Sub
+
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+    Me.ListBox1.Visible = False
+    Me.TextBox1.Visible = False
+    Me.ListBox2.Visible = False
+    Me.TextBox2.Visible = False
+    Me.ListBox3.Visible = False
+    Me.TextBox3.Visible = False
+    Me.ListBox4.Visible = False
+    Me.TextBox4.Visible = False
+    Me.ListBox5.Visible = False
+    Me.TextBox5.Visible = False
+    Me.ListBox6.Visible = False
+    Me.TextBox6.Visible = False
+    Me.ListBox7.Visible = False
+    Me.TextBox7.Visible = False
+    Me.ListBox8.Visible = False
+    Me.TextBox8.Visible = False
+    Me.ListBox9.Visible = False
+    Me.TextBox9.Visible = False
+    Me.ListBox10.Visible = False
+    Me.TextBox10.Visible = False
+    Me.ListBox11.Visible = False
+    Me.TextBox11.Visible = False
+    Me.ListBox12.Visible = False
+    Me.TextBox12.Visible = False
+    Dim d, i&, Myr&, Arr, cj, cp, jg, r1, n&, ii&
+    Dim x, cpin$, Myr1&, r%, Arr1(), j&
+    If Target.Count > 1 Then Exit Sub
+
+    '成本中心
+    If Target.Column = 27 And Target.Row > 2 Then
+    Me.ListBox2.Visible = True
+    Me.TextBox2.Visible = True
+    Myr = Sheet3.[C65536].End(xlUp).Row
+    Arr = Sheet1.Range("N3:N" & Myr)
+    col = Target.Column
+    Me.ListBox2.Clear
+    Me.TextBox2 = ""
+    With Me.TextBox2
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox2
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet3.Range("C1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox2
+            .List = kb
+        End With
+    End If
+
+    '利润中心
+    If Target.Column = 26 And Target.Row > 2 Then
+    Me.ListBox12.Visible = True
+    Me.TextBox12.Visible = True
+    Myr = Sheet13.[C65536].End(xlUp).Row
+    Arr = Sheet1.Range("M3:M" & Myr)
+    col = Target.Column
+    Me.ListBox12.Clear
+    Me.TextBox12 = ""
+    With Me.TextBox12
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox12
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet13.Range("C1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox12
+            .List = kl
+        End With
+    End If
+
+    '资产管理部门
+    If Target.Column = 28 And Target.Row > 2 Then
+    Me.ListBox3.Visible = True
+    Me.TextBox3.Visible = True
+    Myr = Sheet4.[C65536].End(xlUp).Row
+    Arr = Sheet1.Range("O3:O" & Myr)
+    col = Target.Column
+    Me.ListBox3.Clear
+    Me.TextBox3 = ""
+    With Me.TextBox3
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox3
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet4.Range("C1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox3
+            .List = kc
+        End With
+    End If
+    '资产管理员
+    If Target.Column = 29 And Target.Row > 2 Then
+    Me.ListBox4.Visible = False
+    Me.TextBox4.Visible = False
+
+    Myr = Sheet5.[C65536].End(xlUp).Row
+    Arr = Sheet1.Range("P3:P" & Myr)
+    col = Target.Column
+    Me.ListBox1.Clear
+    Me.TextBox1 = ""
+    With Me.TextBox4
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox4
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet5.Range("C1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox4
+        .List = kd
+    End With
+
+    End If
+    '使用单位
+    If Target.Column = 22 And Target.Row > 2 Then
+    Me.ListBox1.Visible = True
+    Me.TextBox1.Visible = True
+    Myr = Sheet2.[C65536].End(xlUp).Row
+    Arr = Sheet1.Range("Q3:Q" & Myr)
+    col = Target.Column
+    With Me.TextBox1
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+
+    With Me.ListBox1
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet2.Range("C1").Width
+        .Height = Target.Height * 10
+    End With
+
+    With Me.ListBox1
+        .List = ka
+    End With
+
+    End If
+    '使用部门
+   If Target.Column = 23 And Target.Row > 2 Then
+    Me.ListBox8.Visible = False
+    Me.TextBox8.Visible = False
+
+    Myr = Sheet9.[C65536].End(xlUp).Row
+    Arr = Sheet1.Range("R3:R" & Myr)
+    col = Target.Column
+    Me.ListBox1.Clear
+    Me.TextBox1 = ""
+    With Me.TextBox8
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox8
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet9.Range("C1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox8
+        .List = kh
+    End With
+
+    End If
+
+     '保管员
+   If Target.Column = 24 And Target.Row > 2 Then
+    Me.ListBox9.Visible = False
+    Me.TextBox9.Visible = False
+
+    Myr = Sheet11.[C65536].End(xlUp).Row
+    Arr = Sheet1.Range("S3:S" & Myr)
+    col = Target.Column
+    Me.ListBox1.Clear
+    Me.TextBox1 = ""
+    With Me.TextBox9
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox9
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet11.Range("C1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox9
+        .List = ki
+    End With
+
+    End If
+
+     '使用人
+   If Target.Column = 25 And Target.Row > 2 Then
+    Me.ListBox10.Visible = False
+    Me.TextBox10.Visible = False
+
+    Myr = Sheet10.[C65536].End(xlUp).Row
+    Arr = Sheet1.Range("T3:T" & Myr)
+    col = Target.Column
+    Me.ListBox1.Clear
+    Me.TextBox1 = ""
+    With Me.TextBox10
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox10
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet10.Range("C1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox10
+        .List = kj
+    End With
+
+    End If
+
+      '区域编码
+   If Target.Column = 37 And Target.Row > 2 Then
+    Me.ListBox11.Visible = False
+    Me.TextBox11.Visible = False
+
+    Myr = Sheet12.[C65536].End(xlUp).Row
+    Arr = Sheet1.Range("U3:U" & Myr)
+    col = Target.Column
+    Me.ListBox11.Clear
+    Me.TextBox11 = ""
+    With Me.TextBox11
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox11
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet12.Range("C1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox11
+        .List = kk
+    End With
+
+    End If
+    '区县分公司
+    If Target.Column = 38 And Target.Row > 2 Then
+    Me.ListBox5.Visible = False
+    Me.TextBox5.Visible = False
+
+    Myr = Sheet6.[J65536].End(xlUp).Row
+    Arr = Sheet1.Range("V3:V" & Myr)
+    col = Target.Column
+    Me.ListBox5.Clear
+    Me.TextBox5 = ""
+    With Me.TextBox5
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox5
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet6.Range("J1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox5
+        .List = ke
+    End With
+
+    End If
+    '支局
+    If Target.Column = 39 And Target.Row > 2 Then
+    Me.ListBox6.Visible = False
+    Me.TextBox6.Visible = False
+
+    Myr = Sheet7.[J65536].End(xlUp).Row
+    Arr = Sheet1.Range("W3:W" & Myr)
+    col = Target.Column
+    Me.ListBox1.Clear
+    Me.TextBox1 = ""
+    With Me.TextBox6
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox6
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet7.Range("J1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox6
+        .List = kf
+    End With
+
+    End If
+    '营业厅
+   If Target.Column = 40 And Target.Row > 2 Then
+    Me.ListBox7.Visible = False
+    Me.TextBox7.Visible = False
+
+    Myr = Sheet8.[J65536].End(xlUp).Row
+    Arr = Sheet1.Range("X3:X" & Myr)
+    col = Target.Column
+    Me.ListBox1.Clear
+    Me.TextBox1 = ""
+    With Me.TextBox7
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left
+        .Width = Target.Width
+        .Height = Target.Height + 5
+        .Activate
+    End With
+    With Me.ListBox7
+        .Visible = True
+        .Top = Target.Top
+        .Left = Target.Left + Target.Width
+        .Width = Sheet8.Range("J1").Width
+        .Height = Target.Height * 10
+    End With
+    With Me.ListBox7
+        .List = kg
+    End With
+
+    End If
+
+End Sub
+'利润中心
+Private Sub ListBox12_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox12.Value
+    Me.ListBox12.Clear
+    Me.TextBox12 = ""
+    Me.ListBox12.Visible = False
+    Me.TextBox12.Visible = False
+End Sub
+Private Sub ListBox12_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox12.Value
+        Me.ListBox12.Clear
+        Me.TextBox12 = ""
+        Me.ListBox12.Visible = False
+        Me.TextBox12.Visible = False
+    End If
+End Sub
+Private Sub ListBox12_GotFocus()
+    On Error Resume Next
+    ListBox12.ListIndex = 0
+End Sub
+Private Sub TextBox12_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox12.Activate
+    End If
+End Sub
+Private Sub TextBox12_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Integer
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox12.Clear
+    With Me.TextBox12
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet13
+            For i = 2 To .Range("C65536").End(xlUp).Row
+                If InStr(.Cells(i, 3).Value, myStr) > 0 Then
+                    Me.ListBox12.AddItem .Cells(i, 3).Value
+                End If
+            Next
+    End With
+End Sub
+'成本中心
+Private Sub ListBox2_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox2.Value
+    Me.ListBox2.Clear
+    Me.TextBox2 = ""
+    Me.ListBox2.Visible = False
+    Me.TextBox2.Visible = False
+End Sub
+Private Sub ListBox2_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox2.Value
+        Me.ListBox2.Clear
+        Me.TextBox2 = ""
+        Me.ListBox2.Visible = False
+        Me.TextBox2.Visible = False
+    End If
+End Sub
+Private Sub ListBox2_GotFocus()
+    On Error Resume Next
+    ListBox2.ListIndex = 0
+End Sub
+Private Sub TextBox2_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox2.Activate
+    End If
+End Sub
+Private Sub TextBox2_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Integer
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox2.Clear
+    With Me.TextBox2
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet3
+            For i = 2 To .Range("C65536").End(xlUp).Row
+                If InStr(.Cells(i, 3).Value, myStr) > 0 Then
+                    Me.ListBox2.AddItem .Cells(i, 3).Value
+                End If
+            Next
+    End With
+End Sub
+'资产管理部门
+Private Sub ListBox3_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox3.Value
+    Me.ListBox3.Clear
+    Me.TextBox3 = ""
+    Me.ListBox3.Visible = False
+    Me.TextBox3.Visible = False
+End Sub
+Private Sub ListBox3_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox3.Value
+        Me.ListBox3.Clear
+        Me.TextBox3 = ""
+        Me.ListBox3.Visible = False
+        Me.TextBox3.Visible = False
+    End If
+End Sub
+Private Sub ListBox3_GotFocus()
+    On Error Resume Next
+    ListBox3.ListIndex = 0
+End Sub
+Private Sub TextBox3_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox3.Activate
+    End If
+End Sub
+Private Sub TextBox3_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Integer
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox3.Clear
+    With Me.TextBox3
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet4
+            For i = 2 To .Range("C65536").End(xlUp).Row
+                If InStr(.Cells(i, 3).Value, myStr) > 0 Then
+                    Me.ListBox3.AddItem .Cells(i, 3).Value
+                End If
+            Next
+    End With
+End Sub
+'资产管理员
+Private Sub ListBox4_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox4.Value
+    Me.ListBox4.Clear
+    Me.TextBox4 = ""
+    Me.ListBox4.Visible = False
+    Me.TextBox4.Visible = False
+End Sub
+Private Sub ListBox4_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox4.Value
+        Me.ListBox4.Clear
+        Me.TextBox4 = ""
+        Me.ListBox4.Visible = False
+        Me.TextBox4.Visible = False
+    End If
+End Sub
+Private Sub ListBox4_GotFocus()
+    On Error Resume Next
+    ListBox4.ListIndex = 0
+End Sub
+Private Sub TextBox4_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox4.Activate
+    End If
+End Sub
+Private Sub TextBox4_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Long
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox4.Clear
+    With Me.TextBox4
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet5
+            For i = 2 To .Range("C65536").End(xlUp).Row
+                If InStr(.Cells(i, 3).Value, myStr) > 0 Then
+                    Me.ListBox4.AddItem .Cells(i, 3).Value
+                End If
+            Next
+    End With
+End Sub
+'使用单位
+Private Sub ListBox1_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox1.Value
+    Me.ListBox1.Clear
+    Me.TextBox1 = ""
+    Me.ListBox1.Visible = False
+    Me.TextBox1.Visible = False
+End Sub
+Private Sub ListBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox1.Value
+        Me.ListBox1.Clear
+        Me.TextBox1 = ""
+        Me.ListBox1.Visible = False
+        Me.TextBox1.Visible = False
+    End If
+End Sub
+Private Sub ListBox1_GotFocus()
+    On Error Resume Next
+    ListBox1.ListIndex = 0
+End Sub
+Private Sub TextBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox1.Activate
+    End If
+End Sub
+Private Sub TextBox1_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Integer
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox1.Clear
+    With Me.TextBox1
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet2
+            For i = 2 To .Range("C65536").End(xlUp).Row
+                If InStr(.Cells(i, 3).Value, myStr) > 0 Then
+                    Me.ListBox1.AddItem .Cells(i, 3).Value
+                End If
+            Next
+    End With
+End Sub
+'使用部门
+Private Sub ListBox8_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox8.Value
+    Me.ListBox8.Clear
+    Me.TextBox8 = ""
+    Me.ListBox8.Visible = False
+    Me.TextBox8.Visible = False
+End Sub
+Private Sub ListBox8_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox8.Value
+        Me.ListBox8.Clear
+        Me.TextBox8 = ""
+        Me.ListBox8.Visible = False
+        Me.TextBox8.Visible = False
+    End If
+End Sub
+Private Sub ListBox8_GotFocus()
+    On Error Resume Next
+    ListBox8.ListIndex = 0
+End Sub
+Private Sub TextBox8_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox8.Activate
+    End If
+End Sub
+Private Sub TextBox8_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Integer
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox8.Clear
+    With Me.TextBox8
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet9
+            For i = 2 To .Range("C65536").End(xlUp).Row
+                If InStr(.Cells(i, 3).Value, myStr) > 0 Then
+                    Me.ListBox8.AddItem .Cells(i, 3).Value
+                End If
+            Next
+    End With
+End Sub
+'保管员
+Private Sub ListBox9_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox9.Value
+    Me.ListBox9.Clear
+    Me.TextBox9 = ""
+    Me.ListBox9.Visible = False
+    Me.TextBox9.Visible = False
+End Sub
+Private Sub ListBox9_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox9.Value
+        Me.ListBox9.Clear
+        Me.TextBox9 = ""
+        Me.ListBox9.Visible = False
+        Me.TextBox9.Visible = False
+    End If
+End Sub
+Private Sub ListBox9_GotFocus()
+    On Error Resume Next
+    ListBox9.ListIndex = 0
+End Sub
+Private Sub TextBox9_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox9.Activate
+    End If
+End Sub
+Private Sub TextBox9_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Integer
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox9.Clear
+    With Me.TextBox9
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet11
+            For i = 2 To .Range("C65536").End(xlUp).Row
+                If InStr(.Cells(i, 3).Value, myStr) > 0 Then
+                    Me.ListBox9.AddItem .Cells(i, 3).Value
+                End If
+            Next
+    End With
+End Sub
+'使用人
+Private Sub ListBox10_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox10.Value
+    'Me.ListBox10.Clear
+    Me.TextBox10 = ""
+    Me.ListBox10.Visible = False
+    Me.TextBox10.Visible = False
+End Sub
+Private Sub ListBox10_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox10.Value
+        Me.ListBox10.Clear
+        Me.TextBox10 = ""
+        Me.ListBox10.Visible = False
+        Me.TextBox10.Visible = False
+    End If
+End Sub
+Private Sub ListBox10_GotFocus()
+    On Error Resume Next
+    ListBox10.ListIndex = 0
+End Sub
+Private Sub TextBox10_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox10.Activate
+    End If
+End Sub
+Private Sub TextBox10_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Long
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox10.Clear
+    With Me.TextBox10
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet10
+            For i = 2 To .Range("C65536").End(xlUp).Row
+                If InStr(.Cells(i, 3).Value, myStr) > 0 Then
+                    Me.ListBox10.AddItem .Cells(i, 3).Value
+                End If
+            Next
+    End With
+End Sub
+'区域编码
+Private Sub ListBox11_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox11.Value
+    Me.ListBox11.Clear
+    Me.TextBox11 = ""
+    Me.ListBox11.Visible = False
+    Me.TextBox11.Visible = False
+End Sub
+Private Sub ListBox11_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox11.Value
+        Me.ListBox11.Clear
+        Me.TextBox11 = ""
+        Me.ListBox11.Visible = False
+        Me.TextBox11.Visible = False
+    End If
+End Sub
+Private Sub ListBox11_GotFocus()
+    On Error Resume Next
+    ListBox11.ListIndex = 0
+End Sub
+Private Sub TextBox11_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox11.Activate
+    End If
+End Sub
+Private Sub TextBox11_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Integer
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox11.Clear
+    With Me.TextBox11
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet12
+            For i = 2 To .Range("C65536").End(xlUp).Row
+                If InStr(.Cells(i, 3).Value, myStr) > 0 Then
+                    Me.ListBox11.AddItem .Cells(i, 3).Value
+                End If
+            Next
+    End With
+End Sub
+'区县分公司
+Private Sub ListBox5_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox5.Value
+    Me.ListBox5.Clear
+    Me.TextBox5 = ""
+    Me.ListBox5.Visible = False
+    Me.TextBox5.Visible = False
+End Sub
+Private Sub ListBox5_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox5.Value
+        Me.ListBox5.Clear
+        Me.TextBox5 = ""
+        Me.ListBox5.Visible = False
+        Me.TextBox5.Visible = False
+    End If
+End Sub
+Private Sub ListBox5_GotFocus()
+    On Error Resume Next
+    ListBox5.ListIndex = 0
+End Sub
+Private Sub TextBox5_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox5.Activate
+    End If
+End Sub
+Private Sub TextBox5_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Integer
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox5.Clear
+    With Me.TextBox5
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet6
+            For i = 2 To .Range("J65536").End(xlUp).Row
+                If InStr(.Cells(i, 10).Value, myStr) > 0 Then
+                    Me.ListBox5.AddItem .Cells(i, 10).Value
+                End If
+            Next
+    End With
+End Sub
+'支局
+Private Sub ListBox6_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox6.Value
+    Me.ListBox6.Clear
+    Me.TextBox6 = ""
+    Me.ListBox6.Visible = False
+    Me.TextBox6.Visible = False
+End Sub
+Private Sub ListBox6_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox6.Value
+        Me.ListBox6.Clear
+        Me.TextBox6 = ""
+        Me.ListBox6.Visible = False
+        Me.TextBox6.Visible = False
+    End If
+End Sub
+Private Sub ListBox6_GotFocus()
+    On Error Resume Next
+    ListBox6.ListIndex = 0
+End Sub
+Private Sub TextBox6_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox6.Activate
+    End If
+End Sub
+Private Sub TextBox6_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Integer
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox6.Clear
+    With Me.TextBox6
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet7
+            For i = 2 To .Range("J65536").End(xlUp).Row
+                If InStr(.Cells(i, 10).Value, myStr) > 0 Then
+                    Me.ListBox6.AddItem .Cells(i, 10).Value
+                End If
+            Next
+    End With
+End Sub
+'营业厅
+Private Sub ListBox7_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    ActiveCell.Value = ListBox7.Value
+    Me.ListBox7.Clear
+    Me.TextBox7 = ""
+    Me.ListBox7.Visible = False
+    Me.TextBox7.Visible = False
+End Sub
+Private Sub ListBox7_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        ActiveCell.Value = ListBox7.Value
+        Me.ListBox7.Clear
+        Me.TextBox7 = ""
+        Me.ListBox7.Visible = False
+        Me.TextBox7.Visible = False
+    End If
+End Sub
+Private Sub ListBox7_GotFocus()
+    On Error Resume Next
+    ListBox7.ListIndex = 0
+End Sub
+Private Sub TextBox7_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Sheet1.ListBox7.Activate
+    End If
+End Sub
+Private Sub TextBox7_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim i As Integer
+    Dim Language As Boolean
+    Dim myStr As String
+    Me.ListBox7.Clear
+    With Me.TextBox7
+        For i = 1 To Len(.Value)
+            If Asc(Mid$(.Value, i, 1)) > 255 Or Asc(Mid$(.Value, i, 1)) < 0 Then
+                Language = True
+                myStr = myStr & Mid$(.Value, i, 1)
+            Else
+                myStr = myStr & LCase(Mid$(.Value, i, 1))
+            End If
+        Next
+    End With
+    With Sheet8
+            For i = 2 To .Range("J65536").End(xlUp).Row
+                If InStr(.Cells(i, 10).Value, myStr) > 0 Then
+                    Me.ListBox7.AddItem .Cells(i, 10).Value
+                End If
+            Next
+    End With
+End Sub
+
+
+
+
+

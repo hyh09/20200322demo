@@ -11,5 +11,5 @@
 
     <dwr:configuration/>
 
-    <!--<import resource="gcdubbo-dev-grpcsmer.xml"/>-->
+    <import resource="gcdubbo-dev-grpcsmer.xml"/>
 </beans>

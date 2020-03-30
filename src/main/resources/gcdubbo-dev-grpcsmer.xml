@@ -35,13 +35,13 @@
 		zookeeper://10.20.153.10:2181?backup=10.20.153.11:2181,10.20.153.12:2181
 	-->
 	<!--gxg测试-->
-	<!--<dubbo:registry  address="zookeeper://10.128.90.55:12179"   file="./gmarsvc_dubcache/dubbo.cache"/>-->
+	<dubbo:registry  address="zookeeper://10.128.90.55:12179"   file="./gmarsvc_dubcache/dubbo.cache"/>
 
 	<!--黑龙江-->
 	<!--<dubbo:registry  address="zookeeper://10.128.90.60:12301"   file="./gmarsvc_dubcache/dubbo.cache"/>-->
 
-	<dubbo:registry  address="zookeeper://10.128.75.118:12181"
-	client="curator" username="smrh_zk_gq" password="A#mdf+2706=ttw"/>
+	<!--<dubbo:registry  address="zookeeper://10.128.75.118:12181"-->
+	<!--client="curator" username="smrh_zk_gq" password="A#mdf+2706=ttw"/>-->
 
 
 
@@ -60,6 +60,10 @@
 
 	<dubbo:reference interface="com.sinovate.ngrms.gcbuapp.abl.gcodemix.svc.intqry.StrongRelatinCheckSvc"
 				   id="strongRelatinCheckImpI" version="v1.0.0" group="ustc-server-proxy"  timeout="1200000"/>
+
+
+	<dubbo:reference interface="com.chinatelecom.grp.wfact.WfDataValidationSvc"
+				   id="wfDataValidationSvcImpl" version="v1.0.0" group="ustc-server" timeout="1200000"/>
 
 
 </beans>
