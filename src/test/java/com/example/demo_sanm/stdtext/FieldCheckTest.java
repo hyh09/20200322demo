@@ -1,6 +1,7 @@
 package com.example.demo_sanm.stdtext;
 
 import com.chinatelecom.bo.flowchg.cardettyalter.CommReponseBo;
+import com.chinatelecom.grp.support.bo.busiety.AssetDetailExcelBo;
 import com.chinatelecom.grp.wfact.WfDataValidationSvc;
 import com.sinovate.ngrms.gcbuapp.abl.gcodemix.svc.intqry.FieldCheck;
 import org.junit.Test;
@@ -69,4 +70,37 @@ public class FieldCheckTest {
 
 
     }
+
+
+
+    @Test
+    public  void Test13(){
+        AssetDetailExcelBo  assetDetailExcelBo = new AssetDetailExcelBo();
+        assetDetailExcelBo.setZzZclb("");
+        assetDetailExcelBo.setZzKey("01110201");
+        assetDetailExcelBo.setOrd41("本地网及其他");
+    System.out.println("====>"+        fieldCheck.CheckZzZclb(assetDetailExcelBo));
+
+    }
+
+
+    /**
+     * 测试资产管理员导入的问题
+     *
+     */
+
+    @Test
+    public  void TestExcel(){
+
+        /*  解析文件*/
+
+
+        /* 调所需要的接口 */
+
+    }
+
+
+
+
+
 }
