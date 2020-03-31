@@ -102,7 +102,7 @@ select *  from DM_STAFF  dm  where  dm.ACCOUNT='45000644@GX';---Xbtx_wsx528   9e
 
 
 select *  from  DM_STAFF  dm   where  dm.ACCOUNT='45140137@GX';
-update   DM_STAFF   dm  set  dm.PASSWORD='9eb133f6a3921b1af47eedb7ba87c86a' where  dm.ACCOUNT='45340165@GX';
+update   DM_STAFF   dm  set  dm.PASSWORD='9eb133f6a3921b1af47eedb7ba87c86a' where  dm.ACCOUNT='45000644@GX';
 
 
 
@@ -126,4 +126,8 @@ select *  from  MM_SPEC_ATTRIBUTE  ms  where  ms.table_code='EE_ORDERITEM_ASSETD
  and  ms.name in (
   '所在地点','基站(机房)编码','基站(机房)名称','使用部门','使用人','保管员','成本中心',
   '区县分公司','支局','营业厅机构ID','OSS转固资产序号'
-)
+);
+
+
+
+select *  from  SMRH_HLJH.RE_PROJECT_MSS
