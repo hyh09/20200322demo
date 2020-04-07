@@ -2,6 +2,7 @@ package com.example.demo_sanm;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.chinatelecom.prov.strongAssetOrder.checkObject.impl.StrongMssOverallPo;
 import com.example.demo_sanm.beanentity.HttpBean;
 import com.example.demo_sanm.contro.rubo.AssetsCardItems;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
@@ -38,25 +40,40 @@ public class RestTemplateTest {
 
     @Resource
     private RestTemplate restTemplate;
-//    @Test
-//    public  void Test1(){
-//        //url
-//        String url="http://10.128.86.64:8000/serviceAgent/rest/entity/v1/entity/queryEntityByKeys";
-//        //headers
-//          HttpHeaders headers = new HttpHeaders();
-//        headers.add("Content-Type", "application/json");
-//        headers.add("X-APP-ID","29e9446abda53df57268fcc8e327a944");//
-//        headers.add("X-APP-KEY","bfad002d63e3b17a0f3cfc8e4537d61a");//setAppSecret
+    @Test
+    public  void Test1(){
+        //url
+        String url="http://10.128.86.64:8000/serviceAgent/rest/entity/v1/entity/queryEntityByKeys";
+        //headers
+          HttpHeaders headers = new HttpHeaders();
+       // headers.add("Content-Type", "application/json");
+        headers.add("X-APP-ID","29e9446abda53df57268fcc8e327a944");//
+        headers.add("X-APP-KEY","bfad002d63e3b17a0f3cfc8e4537d61a");//setAppSecret
+        headers.add("Content-Encoding", "UTF-8");
+
+        headers.add("Content-Type", "application/json; charset=UTF-8");
+
+        HttpEntity<String> request = new HttpEntity<String>(getbo(), headers);
+        ResponseEntity<String> postForEntity = restTemplate.postForEntity(url, request, String.class);
+        String body = postForEntity.getBody();
+
+        System.out.println(body);
+
+
+
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+//        headers.setContentType(type);
+//        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
 //
-//        HttpEntity<String> request = new HttpEntity<>(content(), headers);
+//        String jsonStr = JSONObject.toJSONString(params);
 //
-//        ResponseEntity<String> postForEntity = restTemplate.postForEntity(url, request, String.class);
-//        String body = postForEntity.getBody();
-//
-//        System.out.println(body);
-//
-//
-//    }
+//        HttpEntity formEntity = new HttpEntity( jsonStr ,headers);
+//        String result = restTemplate.getForObject(url, String.class);
+
+
+    }
 
     /**
      * APPKey：c5118d611d0dfe8fbf040100a1c7581b

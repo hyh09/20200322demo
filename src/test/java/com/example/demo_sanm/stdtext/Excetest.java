@@ -71,7 +71,7 @@ public class Excetest {
 
 //                System.out.println("解析的条数："+i);
 //                System.out.println("对象为:"+assetDetailExcelBos.get(i).toString());
-           //     System.out.println("====>"+assetDetailExcelBos.get(i).getKostl());
+                System.out.println("====>"+assetDetailExcelBos.get(i).getAgreeflag());
             }
         }
 

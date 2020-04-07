@@ -66,7 +66,7 @@ public class SysBasicConstant implements SysBasicConstantSVC{
         sysFilePath = URLDecoder.decode(url.getPath(), "UTF-8");
         sysFilePath = sysFilePath.substring(0, sysFilePath.lastIndexOf("/"));
         sysFilePath = sysFilePath.substring(0, sysFilePath.lastIndexOf("/"));
-        LOGGER.info("当前目录： " + sysFilePath);
+        System.out.println("当前目录： " + sysFilePath);
         if(null!=sysFilePath && !"".equals(sysFilePath)) {
             sysPfileRoot = new File(sysFilePath, SYS_PFILE_ROOT);
             if(!sysPfileRoot.exists()) {

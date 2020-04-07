@@ -19,5 +19,6 @@ public class BeanConfig {
    // @LoadBalanced
     public RestTemplate restTemplate() {
         return new RestTemplate();
+        //return  new   SingletonRestTemplate.getInstance("utf-8");
     }
 }
