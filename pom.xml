@@ -123,6 +123,13 @@
 		</dependency>
 
 
+		<!--<dependency>-->
+			<!--<groupId>com.baomidou</groupId>-->
+			<!--<artifactId>mybatis-plus</artifactId>-->
+			<!--<version>3.0.2</version>-->
+		<!--</dependency>-->
+
+
 
         <!-- Dubbo 官网介绍ZooKeeper作为注册中心给出的 curator 版本 -->
 		<!--<dependency>-->

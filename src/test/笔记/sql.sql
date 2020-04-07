@@ -128,6 +128,6 @@ select *  from  MM_SPEC_ATTRIBUTE  ms  where  ms.table_code='EE_ORDERITEM_ASSETD
   '区县分公司','支局','营业厅机构ID','OSS转固资产序号'
 );
 
+-------------2020年软件交资的表：
+select *  from  PM_MONITOR_SYS_DICT  pt   where  pt.THE_KEY='ANKT_REMOVE';---集中的数据库
 
-
-select *  from  SMRH_HLJH.RE_PROJECT_MSS

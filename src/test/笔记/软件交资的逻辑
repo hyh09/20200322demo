@@ -1,0 +1,57 @@
+
+--无形的交资
+zgOrderDetailController.getExcelBo
+ zgOrderDetailController.uploadVirtualAssetFile
+
+无形的模板：exportVirtualAssetDetailTemp.xls
+
+
+                                    软件                  无形
+         ---zz_krzc2r  zzKrzc    建卡方式                是否扩容
+         --  zzYzcbm3r  zzYzcbm  原卡片编号                ---
+
+
+
+
+         胡盛世 10:29:24
+         软件需求部门---使用部门
+
+         胡盛世 10:29:58
+         软件管理部门--实物管理部门
+
+         胡盛世 10:30:27
+         管理责任人--管理员
+
+         胡盛世 10:30:48
+         建设维护责任人--保管员
+
+ --------------------------------------------------------------------------------
+zgOrderDetailController.updateVirtualAssetDetail   修改是没有校验的
+zgOrderDetailController.addVirtualAssetDetail      保存也没有校验
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
