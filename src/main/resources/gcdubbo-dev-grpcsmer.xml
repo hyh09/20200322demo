@@ -66,5 +66,9 @@
 				   id="wfDataValidationSvcImpl" version="v1.0.0" group="ustc-server" timeout="1200000"/>
 
 
+	<dubbo:reference id="ablCardEntitySvcImpl" interface="com.sinovate.ngrms.gcbuapp.abl.gcodemix.svc.trafixast.AblCardEntitySvc"
+					 version="v1.0.0" group="ustc-server" timeout="1200000"/>
+
+
 
 </beans>

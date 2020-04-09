@@ -12,4 +12,5 @@
     <dwr:configuration/>
 
     <import resource="gcdubbo-dev-grpcsmer.xml"/>
+    <import resource="gc-cdmweb-servlets.xml"/>
 </beans>

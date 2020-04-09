@@ -36,7 +36,13 @@
        DemoService.exportExcleResourceByParam('回声测试',
                {
                    callback: function (data) {
-                       dwr.engine.openInDownload(data);
+                       if(data.status){
+                           alert(data)
+                       }else{
+                           alert("+++》"+data.errorMsg)
+                           dwr.engine.openInDownload(data.bos);
+
+                       }
                    },
                    async: false
                }

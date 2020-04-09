@@ -1,6 +1,8 @@
 package com.example.demo_sanm.dwr;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.alibaba.dubbo.common.utils.StringUtils;
+import com.chinatelecom.bo.flowchg.cardettyalter.CommReponseAllBo;
 import com.chinatelecom.grp.support.bo.comm.PageRowBounds;
 import com.example.demo_sanm.contro.excel.ErorerBo;
 import com.example.demo_sanm.interfacesvc.ColumnConfig;
@@ -8,19 +10,30 @@ import com.example.demo_sanm.yunexcel.ExcelData;
 import com.example.demo_sanm.yunexcel.ExportExcelyunSvc;
 import com.example.demo_sanm.yunexcel.ExportExcelyunUtils;
 import com.sinovate.ngrms.comm.ptfcore.web.pagination.Page;
+import com.sinovate.ngrms.commplt.toolkits.excel4j.binding.Excel2Bean;
+import com.sinovate.ngrms.commplt.toolkits.excel4j.binding.Excel2BeanRowMapper;
 import com.sinovate.ngrms.commplt.toolkits.excel4j.binding.Excel4Java;
+import com.sinovate.ngrms.commplt.toolkits.excel4j.binding.impl.DefaultExcel4JavaRowMapper;
 import com.sinovate.ngrms.commplt.toolkits.excel4j.binding.impl.Excel4JavaImpl;
 import com.sinovate.ngrms.commplt.toolkits.excel4j.usermodel.ExcelRow;
 import com.sinovate.ngrms.gcbscsvr.mdl.bo.itspqry.GetResourceBo;
+import com.sinovate.ngrms.gcbscsvr.mdl.bo.ordflow.AssetQryBo;
+import com.sinovate.ngrms.gcbscsvr.mdl.db.gitsp.rprj.RmAsset;
 import com.sinovate.ngrms.gcbscsvr.mdl.vo.ResourceVo;
+import com.sinovate.ngrms.gcbscsvr.mdl.vo.ordflow.ResEntityScrapExceVo;
+import com.sinovate.ngrms.gcbscsvr.mdl.vo.ordflow.ResEntityVo;
 import com.sinovate.ngrms.gcbscsvr.ps.support.cache.GmDataCacheService;
+import com.sinovate.ngrms.gcbscsvr.support.multids.ItspProvCfgConstants;
+import com.sinovate.ngrms.gcbuapp.abl.gcodemix.svc.trafixast.AblCardEntitySvc;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.formula.functions.T;
 import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 import org.directwebremoting.io.FileTransfer;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -113,6 +127,11 @@ public class DemoService {
             "卡片公司代码","资产目录","资源规格ID","虚实属性",};
 
 
+
+    @Autowired
+    @Qualifier("ablCardEntitySvcImpl")
+    private AblCardEntitySvc ablCardEntitySvc;
+
     /**
      * 后台生成Excel
      * @param response
@@ -123,10 +142,76 @@ public class DemoService {
     @RemoteMethod
     @RequestMapping("/exportExcleResourceByParam")
     @ResponseBody
-    public FileTransfer  exportExcleResourceByParam(HttpServletResponse response, String modelIdName) throws Exception {
+    public CommReponseAllBo  exportExcleResourceByParam(HttpServletResponse response, String modelIdName) throws Exception {
         LOGGER.info("=====   Welcome to 综合查询资源信息   export ======");
-        return  exportExcelyunSvc.exportExcel(response,"综合资源信息.xls",getlist(),new ErorerBo());
+        AssetQryBo assetQryBo = new AssetQryBo();
+        assetQryBo.setAssetsCardCode(modelIdName);
+        String relEntityType="1";
+        String domain="45";
+        boolean  isRelRes =false;
+        boolean isRelPrj=false;
+        boolean isProvince=true;
+        String areaCode="324048";
+        String moreConditions="ISFORSRCAP";
+        CommReponseAllBo commReponseAllBo=    ablCardEntitySvc.Assetretirement( getExcelbo(),relEntityType, domain,
+                false,false,
+                isProvince, areaCode,moreConditions);
+        System.out.println("===>getErrorMsggetErrorMsg"+commReponseAllBo.getErrorMsg());
+     //   System.out.println("===>getRmAssetList"+commReponseAllBo.getRmAssetList().get(0).getAssetscardcode());
+
+        FileTransfer fileTransfer=  new FileTransfer("111.xls", "application/msexcel", (byte[]) commReponseAllBo.getBos());// exportExcelyunSvc.exportExcel(response,"综合资源信息.xls",getlist(),new ErorerBo());
+        commReponseAllBo.setBos(fileTransfer);
+        return  commReponseAllBo;
     }
+
+
+    @Test
+    public  void Test(){
+        getExcelbo();
+    }
+
+
+    public List<ResEntityScrapExceVo>  getExcelbo(){
+
+        List<ResEntityScrapExceVo>  resEntityScrapExceVos = new ArrayList <>();
+
+           File targetFile =new File("E:\\windowtoll\\test\\exportAssetTerm.xls") ;//copyFile(filename, inputStream);
+            Excel2Bean e4j = new Excel4JavaImpl();
+            e4j.createExcelBook(targetFile);
+            Excel2BeanRowMapper<ResEntityScrapExceVo> rowMapper = new AssetDetailExcelBoResEntityScrapExceVo();
+            //从excel模板中转化为excelBo
+            List<ResEntityScrapExceVo> assetDetailExcelBos = e4j.toBeans("资产条件", 2, Integer.MAX_VALUE, rowMapper);
+          //  System.out.println("===>"+assetDetailExcelBos);
+            if(CollectionUtils.isNotEmpty(assetDetailExcelBos)){
+                for(ResEntityScrapExceVo vo:assetDetailExcelBos){
+                    System.out.println("====>"+vo.getAssetscardcode());
+                    if(vo.getAssetscardcode() !=null && StringUtils.isNotEmpty(vo.getAssetscardcode() ) &&  vo.getAssetscardcode() !="null"  ){
+                        resEntityScrapExceVos.add(vo);
+                    }
+                }
+            }
+            System.out.println("====最后结果"+resEntityScrapExceVos);
+
+            return resEntityScrapExceVos;
+
+
+    }
+
+
+    class AssetDetailExcelBoResEntityScrapExceVo extends DefaultExcel4JavaRowMapper<ResEntityScrapExceVo> {
+
+        @Override
+        protected ResEntityScrapExceVo createBean() {
+            return new ResEntityScrapExceVo();
+        }
+
+        @Override
+        protected ResEntityScrapExceVo postRow2Bean(ResEntityScrapExceVo bean) {
+            return bean;
+        }
+
+    }
+
 
 
     /**
