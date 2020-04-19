@@ -1,0 +1,669 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.sinovate.res-ngrms</groupId>
+        <artifactId>usi.ngrms-gc.2devapp</artifactId>
+        <version>v1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>usi.ngc2da.bscsvr</artifactId>
+    <packaging>jar</packaging>
+
+    <name>usi.ngc2da.bscsvr</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <antlr4.version>4.5</antlr4.version>
+        <xmlapis.version>1.4.01</xmlapis.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.gentoor</groupId>
+            <artifactId>cotester</artifactId>
+            <version>1.0-RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.52</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sinovate.res-ngrms</groupId>
+            <artifactId>usi.ngc1cp.frmcpt</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr4.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>${xmlapis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.druid</groupId>
+            <artifactId>druid-wrapper</artifactId>
+            <version>0.2.9</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>${antlr4.version}</version>
+                <configuration>
+                    <listener>false</listener>
+                    <visitor>true</visitor>
+                    <libDirectory>${basedir}/src/main/antlr4/imports</libDirectory>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <!-- 设定测试终端的输出编码格式 -->
+                    <argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <!-- 环境切换 -->
+    <profiles>
+        <!-- 合肥开发环境 -->
+        <profile>
+            <id>bscsvr-devtest-hf</id>
+            <!--<activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>-->
+            <properties>
+                <env>devtest</env>
+                <!-- 应用系统参数信息 -->
+                <ap.jdbc.grpitsp.url>jdbc:oracle:thin:@192.168.80.153:1521:resdcenter</ap.jdbc.grpitsp.url>
+                <ap.jdbc.grpitsp.username>smrh_sxs</ap.jdbc.grpitsp.username>
+                <ap.jdbc.grpitsp.password>smrh_sxs</ap.jdbc.grpitsp.password>
+                <ap.jdbc.grpmeta.url>jdbc:oracle:thin:@192.168.80.153:1521:resdcenter</ap.jdbc.grpmeta.url>
+                <ap.jdbc.grpmeta.username>smrh_sxs</ap.jdbc.grpmeta.username>
+                <ap.jdbc.grpmeta.password>smrh_sxs</ap.jdbc.grpmeta.password>
+                <ap.jdbc.grpcent.url>jdbc:oracle:thin:@192.168.80.153:1521:resdcenter</ap.jdbc.grpcent.url>
+                <ap.jdbc.grpcent.username>smrh_sxs</ap.jdbc.grpcent.username>
+                <ap.jdbc.grpcent.password>smrh_sxs</ap.jdbc.grpcent.password>
+
+                <ap.jdbc.grpia.url>jdbc:oracle:thin:@10.128.90.213:3436:gmar</ap.jdbc.grpia.url>
+                <ap.jdbc.grpia.username>smrh_xjx_ineffi</ap.jdbc.grpia.username>
+                <ap.jdbc.grpia.password>smrh_xjx_ineffi</ap.jdbc.grpia.password>
+
+                <ap.druid.initialSize>10</ap.druid.initialSize>
+                <ap.druid.druid.minIdle>10</ap.druid.druid.minIdle>
+                <ap.druid.maxActive>30</ap.druid.maxActive>
+                <ap.druid.maxWait>60000</ap.druid.maxWait>
+                <ap.limit.time.zgorder>7</ap.limit.time.zgorder>
+                <ap.limit.time.alterorder>7</ap.limit.time.alterorder>
+                <ap.limit.time.examineorder>7</ap.limit.time.examineorder>
+                <ap.validation.result.maxsize.zg>10</ap.validation.result.maxsize.zg>
+                <ap.codemix.ip>localhost</ap.codemix.ip>
+                <ap.codemix.server.domainName>smrhinterfatest1.mss.ctc.com</ap.codemix.server.domainName>
+                <ap.gmar.checknotnull></ap.gmar.checknotnull>
+                <ap.codemix.port>8886</ap.codemix.port>
+                <ap.codemix.server.domainName>smrhinterfatest1.mss.ctc.com</ap.codemix.server.domainName>
+                <ap.mss.verifyfile.path>/gmar/verify-files/xjx</ap.mss.verifyfile.path>
+                <ap.mss.verifyfile>verify-test</ap.mss.verifyfile>
+                <ap.updatepwd.procedure></ap.updatepwd.procedure>
+                <ap.referer.urlPattern.gf></ap.referer.urlPattern.gf>
+                <ap.prov.domainId>61</ap.prov.domainId>
+                <ap.prov.areacode>07</ap.prov.areacode>
+                <ap.prov.bgblflag>1</ap.prov.bgblflag>
+                <ap.file.startDir>/gmar/gcdm-inter/gsxs</ap.file.startDir>
+                <ap.file.tempDir></ap.file.tempDir>
+                <!-- 远程文件拷贝 -->
+                <ap.gmar.scp.user></ap.gmar.scp.user>
+                <ap.gmar.scp.password></ap.gmar.scp.password>
+                <ap.gmar.scp.port></ap.gmar.scp.port>
+                <!--是否通知省内卡实闭环  1.通知   0.不通知-->
+                <ap.gmar.notice>1</ap.gmar.notice>
+                <!--卡实闭环oip注册服务编码-->
+                <ap.isvc.oip.servcode>41.3001.ksqueryServ.SynReq</ap.isvc.oip.servcode>
+                <!--卡实闭环oip的注册地址-->
+                <ap.isvc.oip.commurl>http://10.128.88.20:7070/oip/proxy?ProtocolType=002&amp;bizsectype=009</ap.isvc.oip.commurl>
+                <!--省统一库资源信息查询接口服务编码-->
+                <ap.prov.getres.servcode></ap.prov.getres.servcode>
+                <!--集团统一库资源信息查询接口服务编码-->
+                <ap.grp.getres.servcode></ap.grp.getres.servcode>
+                <!-- 集中省份domain -->
+                <ap.gmar.grp.provs></ap.gmar.grp.provs>
+                <!-- 混合省份domian -->
+                <ap.gmar.priv.provs></ap.gmar.priv.provs>
+                <ap.uploadFile.maxFileSize>50</ap.uploadFile.maxFileSize>
+                <ap.prov.bindModel>ResourceIdBindMaterielIdModel</ap.prov.bindModel>
+                <ap.prov.istestmaterial>1</ap.prov.istestmaterial>
+                <ap.itsm.singleLoginUrl>http://10.128.91.23:7001/SingleSignOn</ap.itsm.singleLoginUrl>
+                <ap.itsm.needSingleLoginUrl>http://10.128.91.23:7001/SingleSignOn</ap.itsm.needSingleLoginUrl>
+
+                <!-- 综合查询上传资源数据查询 -->
+                <ap.prov.syDataSyncWeb>https://www.baidu.com/</ap.prov.syDataSyncWeb>
+                <!--是否管理闲置资源   1.管理  0.不管理-->
+                <ap.bps.isManager>0</ap.bps.isManager>
+                <!--判断是否增加新环节，0.不增加，1.增加物料与资源映射环节-->
+                <ap.prov.isaddprocess>0</ap.prov.isaddprocess>
+                <ap.bps.processDefName>com.sinovate.ngrms.workflow.mar.2_5_net2storemngidle</ap.bps.processDefName>
+                <!--<ap.bps.processDefName>com.sinovate.ngrms.workflow.mar.2_6_net2storenotmngidle</ap.bps.processDefName>-->
+                <!--页面集成系统url正则样式（三码集中）-->
+                <ap.flt.prov.sanma.refererUrl>^(http://10\.128\.90\.56:10208/gcodemix/.*)|(http://10\.128\.90\.56:10217/gcodemix/.*)$</ap.flt.prov.sanma.refererUrl>
+                <!--redis中心-->
+                <ap.flt.redis.host>10.128.90.60</ap.flt.redis.host>
+                <ap.flt.redis.port>61379</ap.flt.redis.port>
+                <ap.flt.redis.password></ap.flt.redis.password>
+                <ap.flt.redis.maxIdle>100</ap.flt.redis.maxIdle>
+                <ap.flt.redis.maxActive>300</ap.flt.redis.maxActive>
+                <ap.flt.redis.maxWait>1000</ap.flt.redis.maxWait>
+                <ap.flt.redis.testOnBorrow>true</ap.flt.redis.testOnBorrow>
+                <ap.flt.redis.timeout>100000</ap.flt.redis.timeout>
+                <!--<ap.flt.redis.database>1</ap.flt.redis.database>-->
+                <!--服务器主机地址-->
+                <ap.localHost.ip>10.128.90.60</ap.localHost.ip>
+                <ap.grp.gmar.ipaddress>http://10.128.90.55:18090</ap.grp.gmar.ipaddress>
+            </properties>
+            <build>
+                <filters>
+                    <filter>src/build/profile-cfg-filter/conf-${env}.properties</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+
+        <!-- 开发环境 -->
+        <profile>
+            <id>bscsvr-devtest</id>
+            <!--<activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>-->
+            <properties>
+                <env>devtest</env>
+                <!-- 应用系统参数信息 -->
+                <ap.jdbc.grpitsp.url>jdbc:oracle:thin:@10.128.90.213:3436:gmar</ap.jdbc.grpitsp.url>
+                <ap.jdbc.grpitsp.username>smrh_sxs</ap.jdbc.grpitsp.username>
+                <ap.jdbc.grpitsp.password>smrh_sxs</ap.jdbc.grpitsp.password>
+                <ap.jdbc.grpmeta.url>jdbc:oracle:thin:@10.128.90.213:3436:gmar</ap.jdbc.grpmeta.url>
+                <ap.jdbc.grpmeta.username>smrh_sxs</ap.jdbc.grpmeta.username>
+                <ap.jdbc.grpmeta.password>smrh_sxs</ap.jdbc.grpmeta.password>
+                <ap.jdbc.grpcent.url>jdbc:oracle:thin:@10.128.90.142:3436:ora</ap.jdbc.grpcent.url>
+                <ap.jdbc.grpcent.username>smrh_jz</ap.jdbc.grpcent.username>
+                <ap.jdbc.grpcent.password>smrh_jz</ap.jdbc.grpcent.password>
+
+                <ap.jdbc.grpia.url>jdbc:oracle:thin:@10.128.90.213:3436:gmar</ap.jdbc.grpia.url>
+                <ap.jdbc.grpia.username>smrh_xjx_ineffi</ap.jdbc.grpia.username>
+                <ap.jdbc.grpia.password>smrh_xjx_ineffi</ap.jdbc.grpia.password>
+
+                <ap.druid.initialSize>10</ap.druid.initialSize>
+                <ap.druid.druid.minIdle>10</ap.druid.druid.minIdle>
+                <ap.druid.maxActive>50</ap.druid.maxActive>
+                <ap.druid.maxWait>60000</ap.druid.maxWait>
+                <ap.limit.time.zgorder>7</ap.limit.time.zgorder>
+                <ap.limit.time.alterorder>7</ap.limit.time.alterorder>
+                <ap.limit.time.examineorder>7</ap.limit.time.examineorder>
+                <ap.validation.result.maxsize.zg>10</ap.validation.result.maxsize.zg>
+                <ap.codemix.ip>10.128.90.140</ap.codemix.ip>
+                <ap.codemix.port>10008</ap.codemix.port>
+                <ap.codemix.server.domainName>smrhinterfatest1.mss.ctc.com</ap.codemix.server.domainName>
+                <ap.mss.verifyfile.path>/gmar/verify-files/sxs</ap.mss.verifyfile.path>
+                <ap.mss.verifyfile>verify-test</ap.mss.verifyfile>
+                <ap.gmar.checknotnull></ap.gmar.checknotnull>
+                <ap.updatepwd.procedure></ap.updatepwd.procedure>
+                <ap.referer.urlPattern.gf></ap.referer.urlPattern.gf>
+                <ap.gstdsvc.shardingid>1</ap.gstdsvc.shardingid>
+                <ap.prov.domainId>61</ap.prov.domainId>
+                <ap.prov.areacode>07</ap.prov.areacode>
+                <ap.prov.bgblflag>0</ap.prov.bgblflag>
+                <ap.file.startDir>/gmar/gcdm-inter/gsxs</ap.file.startDir>
+                <ap.file.tempDir></ap.file.tempDir>
+                <!-- 远程文件拷贝 -->
+                <ap.gmar.scp.user>sxs</ap.gmar.scp.user>
+                <ap.gmar.scp.password>sxs@2016</ap.gmar.scp.password>
+                <ap.gmar.scp.port>5151</ap.gmar.scp.port>
+                <!--是否通知省内卡实闭环  1.通知   0.不通知-->
+                <ap.gmar.notice>1</ap.gmar.notice>
+                <!--卡实闭环oip注册服务编码-->
+                <ap.isvc.oip.servcode>41.3001.ksqueryServ.SynReq</ap.isvc.oip.servcode>
+                <!--卡实闭环oip的注册地址-->
+                <ap.isvc.oip.commurl>http://10.128.88.20:7070/oip/proxy?ProtocolType=002&amp;bizsectype=009</ap.isvc.oip.commurl>
+                <!--省统一库资源信息查询接口服务编码-->
+                <ap.prov.getres.servcode></ap.prov.getres.servcode>
+                <!--集团统一库资源信息查询接口服务编码-->
+                <ap.grp.getres.servcode></ap.grp.getres.servcode>
+                <!-- 集中省份domain -->
+                <ap.gmar.grp.provs></ap.gmar.grp.provs>
+                <!-- 混合省份domian -->
+                <ap.gmar.priv.provs></ap.gmar.priv.provs>
+                <ap.uploadFile.maxFileSize>50</ap.uploadFile.maxFileSize>
+                <!--资源与物料编码关联模式:ResourceIdBindMaterielCodeModel-->
+                <!--资源与物料ID关联模式:ResourceIdBindMaterielIdModel-->
+                <ap.prov.bindModel>ResourceIdBindMaterielIdModel</ap.prov.bindModel>
+                <ap.prov.istestmaterial>1</ap.prov.istestmaterial>
+                <ap.itsm.singleLoginUrl>http://10.128.91.23:7001/SingleSignOn</ap.itsm.singleLoginUrl>
+                <ap.itsm.needSingleLoginUrl>http://10.128.91.23:7001/SingleSignOn</ap.itsm.needSingleLoginUrl>
+                <!-- 综合查询上传资源数据查询 -->
+                <ap.prov.syDataSyncWeb>https://www.baidu.com/</ap.prov.syDataSyncWeb>
+                <!--是否管理闲置资源   1.管理  0.不管理-->
+                <ap.bps.isManager>1</ap.bps.isManager>
+                <!--判断是否增加新环节，0.不增加，1.增加物料与资源映射环节-->
+                <ap.prov.isaddprocess>1</ap.prov.isaddprocess>
+                <ap.bps.processDefName>com.sinovate.ngrms.workflow.mar.2_5_net2storemngidle</ap.bps.processDefName>
+                <!--<ap.bps.processDefName>com.sinovate.ngrms.workflow.mar.2_6_net2storenotmngidle</ap.bps.processDefName>-->
+                <!--页面集成系统url正则样式（三码集中）-->
+                <ap.flt.prov.sanma.refererUrl>^(http://10\.128\.90\.56:10208/gcodemix/.*)|(http://10\.128\.90\.56:10217/gcodemix/.*)$</ap.flt.prov.sanma.refererUrl>
+                <!--redis中心-->
+                <ap.flt.redis.host>10.128.90.60</ap.flt.redis.host>
+                <ap.flt.redis.port>61379</ap.flt.redis.port>
+                <ap.flt.redis.password></ap.flt.redis.password>
+                <ap.flt.redis.maxIdle>100</ap.flt.redis.maxIdle>
+                <ap.flt.redis.maxActive>300</ap.flt.redis.maxActive>
+                <ap.flt.redis.maxWait>1000</ap.flt.redis.maxWait>
+                <ap.flt.redis.testOnBorrow>true</ap.flt.redis.testOnBorrow>
+                <ap.flt.redis.timeout>100000</ap.flt.redis.timeout>
+                <!--<ap.flt.redis.database>1</ap.flt.redis.database>-->
+                <!--服务器主机地址-->
+                <ap.localHost.ip>10.128.90.60</ap.localHost.ip>
+                <ap.grp.gmar.ipaddress>http://10.128.90.55:18090</ap.grp.gmar.ipaddress>
+            </properties>
+            <build>
+                <filters>
+                    <filter>src/build/profile-cfg-filter/conf-${env}.properties</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+
+
+        <!-- 集成测试环境 -->
+        <!--河北测试环境-->
+        <profile>
+            <id>bscsvr-intertest-hbj</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <env>devtest</env>
+                <!-- 应用系统参数信息 -->
+                <ap.jdbc.grpitsp.url>jdbc:oracle:thin:@10.128.90.58:3437:smrhdb2</ap.jdbc.grpitsp.url>
+                <ap.jdbc.grpitsp.username>ITSP_APPSM_HBJ</ap.jdbc.grpitsp.username>
+                <ap.jdbc.grpitsp.password>Shzp_Wdgc#1949</ap.jdbc.grpitsp.password>
+                <ap.jdbc.grpmeta.url>jdbc:oracle:thin:@10.128.90.58:3437:smrhdb2</ap.jdbc.grpmeta.url>
+                <ap.jdbc.grpmeta.username>ITSP_APPSM_HBJ</ap.jdbc.grpmeta.username>
+                <ap.jdbc.grpmeta.password>Shzp_Wdgc#1949</ap.jdbc.grpmeta.password>
+                <ap.jdbc.grpcent.url>jdbc:oracle:thin:@10.128.90.54:1521:smrhdb2</ap.jdbc.grpcent.url>
+                <ap.jdbc.grpcent.username>gmar_jz</ap.jdbc.grpcent.username>
+                <ap.jdbc.grpcent.password>Shzp_Wdgc#1949</ap.jdbc.grpcent.password>
+                <ap.jdbc.grpmatt.url>jdbc:oracle:thin:@10.128.90.58:3437:smrhdb2</ap.jdbc.grpmatt.url>
+                <ap.jdbc.grpmatt.username>ITSP_APPSW_HBJ</ap.jdbc.grpmatt.username>
+                <ap.jdbc.grpmatt.password>Shzp_Wdgc#1949</ap.jdbc.grpmatt.password>
+
+                <ap.jdbc.grpia.url>jdbc:oracle:thin:@10.128.90.58:3437:smrhdb2</ap.jdbc.grpia.url>
+                <ap.jdbc.grpia.username>ITSP_APPDX_HBJ</ap.jdbc.grpia.username>
+                <ap.jdbc.grpia.password>Shzp_Wdgc#1949</ap.jdbc.grpia.password>
+
+                <ap.druid.initialSize>50</ap.druid.initialSize>
+                <ap.druid.druid.minIdle>50</ap.druid.druid.minIdle>
+                <ap.druid.maxActive>280</ap.druid.maxActive>
+                <ap.druid.maxWait>60000</ap.druid.maxWait>
+                <ap.limit.time.zgorder>7</ap.limit.time.zgorder>
+                <ap.limit.time.alterorder>7</ap.limit.time.alterorder>
+                <ap.limit.time.examineorder>7</ap.limit.time.examineorder>
+                <ap.validation.result.maxsize.zg>10</ap.validation.result.maxsize.zg>
+                <ap.codemix.ip>10.128.90.56</ap.codemix.ip>
+                <ap.codemix.port>10208</ap.codemix.port>
+
+                <ap.codemix.server.domainName>smrhinterfatest1.mss.ctc.com</ap.codemix.server.domainName>
+                <ap.mss.verifyfile.path>/gmar/verify-files/xjx</ap.mss.verifyfile.path>
+                <ap.mss.verifyfile>verify-test</ap.mss.verifyfile>
+                <ap.gmar.checknotnull></ap.gmar.checknotnull>
+                <ap.updatepwd.procedure></ap.updatepwd.procedure>
+                <!--<ap.referer.urlPattern.gf>^http://10\.140\.9\.15:81/msscpmis/construct/proj(Acctchg|FinalAcct)Action\.do\?value\(act\)=list&amp;value\((chg|bill)type\)=\w+&amp;value\(currMenid\)=\d{3}_\d{5}_\d{7}$</ap.referer.urlPattern.gf>-->
+                <ap.referer.urlPattern.gf></ap.referer.urlPattern.gf>
+                <ap.gstdsvc.shardingid>1</ap.gstdsvc.shardingid>
+                <ap.prov.domainId>13</ap.prov.domainId>
+                <ap.prov.areacode>27</ap.prov.areacode>
+                <ap.gstdsvc.shardingid>0</ap.gstdsvc.shardingid>
+                <ap.prov.bgblflag>0</ap.prov.bgblflag>
+                <ap.file.startDir>/smrh/hbj</ap.file.startDir>
+                <ap.file.tempDir>/smrh/hbj/tmpfile</ap.file.tempDir>
+                <!-- 远程文件拷贝 -->
+                <ap.gmar.scp.user>xjx</ap.gmar.scp.user>
+                <ap.gmar.scp.password>xjx@2016</ap.gmar.scp.password>
+                <ap.gmar.scp.port>5151</ap.gmar.scp.port>
+                <!--是否通知省内卡实闭环  1.通知   0.不通知-->
+                <ap.gmar.notice>1</ap.gmar.notice>
+                <!--卡实闭环oip注册服务编码-->
+                <ap.isvc.oip.servcode>41.3001.ksqueryServ.SynReq</ap.isvc.oip.servcode>
+                <!--卡实闭环oip的注册地址-->
+                <ap.isvc.oip.commurl>http://10.128.88.20:7070/oip/proxy?ProtocolType=002&amp;bizsectype=009</ap.isvc.oip.commurl>
+                <!--省统一库资源信息查询接口服务编码-->
+                <ap.prov.getres.servcode></ap.prov.getres.servcode>
+                <!--集团统一库资源信息查询接口服务编码-->
+                <ap.grp.getres.servcode></ap.grp.getres.servcode>
+                <!-- 集中省份domain -->
+                <ap.gmar.grp.provs></ap.gmar.grp.provs>
+                <!-- 混合省份domian -->
+                <ap.gmar.priv.provs></ap.gmar.priv.provs>
+                <ap.uploadFile.maxFileSize>50</ap.uploadFile.maxFileSize>
+                <ap.prov.bindModel>ResourceIdBindMaterielIdModel</ap.prov.bindModel>
+                <ap.prov.istestmaterial>1</ap.prov.istestmaterial>
+                <ap.itsm.singleLoginUrl>http://10.128.86.200:7001/SingleSignOn</ap.itsm.singleLoginUrl>
+                <ap.itsm.needSingleLoginUrl>http://10.128.86.199:7001/SingleSignOn</ap.itsm.needSingleLoginUrl>
+                <!-- 综合查询上传资源数据查询 -->
+                <ap.prov.syDataSyncWeb>https://www.baidu.com/</ap.prov.syDataSyncWeb>
+                <!--是否管理闲置资源   1.管理  0.不管理-->
+                <ap.bps.isManager>0</ap.bps.isManager>
+                <!--是否切换新的资源与物料绑定界面 1 新页面  0 原来界面 -->
+                <ap.prov.isTree>0</ap.prov.isTree>
+                  <!-- 交资优化分省配置  1  交资优化上线   0交资优化恢复原来界面-->
+                <ap.prov.presentOptimization>1</ap.prov.presentOptimization>
+                <!-- 预转固通知单接口分省配置  1 试点-->
+                <ap.prov.zgOrderBefore>1</ap.prov.zgOrderBefore>
+                <!-- 判断是否修改资源测管道段的计算逻辑：1 修改 -->
+                <ap.prov.ismatlength>0</ap.prov.ismatlength>
+                <!--判断是否增加新环节，0.不增加，1.增加物料与资源映射环节-->
+                <ap.prov.isaddprocess>1</ap.prov.isaddprocess>
+                <!--分省配置 0:否； 1【交资表：判断是否做主数据校验，校验逻辑】 机房（基站） -->
+                <ap.prov.isornotProvinceId>1</ap.prov.isornotProvinceId>
+                <!--<ap.bps.processDefName>com.sinovate.ngrms.workflow.mar.2_5_net2storemngidle</ap.bps.processDefName>-->
+                <ap.bps.processDefName>com.sinovate.ngrms.workflow.mar.2_6_net2storenotmngidle</ap.bps.processDefName>
+                <!--页面集成系统url正则样式（三码集中）-->
+                <ap.flt.prov.sanma.refererUrl>^(http://10\.128\.90\.56:10208/gcodemix/.*)|(http://10\.128\.90\.56:10217/gcodemix/.*)$</ap.flt.prov.sanma.refererUrl>
+                <!--redis中心-->
+                <ap.flt.redis.host>10.128.90.60</ap.flt.redis.host>
+                <ap.flt.redis.port>61379</ap.flt.redis.port>
+                <ap.flt.redis.password></ap.flt.redis.password>
+                <ap.flt.redis.maxIdle>100</ap.flt.redis.maxIdle>
+                <ap.flt.redis.maxActive>300</ap.flt.redis.maxActive>
+                <ap.flt.redis.maxWait>1000</ap.flt.redis.maxWait>
+                <ap.flt.redis.testOnBorrow>true</ap.flt.redis.testOnBorrow>
+                <ap.flt.redis.timeout>100000</ap.flt.redis.timeout>
+                <!--<ap.flt.redis.database>1</ap.flt.redis.database>-->
+                <!--服务器主机地址-->
+                <ap.localHost.ip>10.128.90.60</ap.localHost.ip>
+                <ap.grp.gmar.ipaddress>http://10.128.90.55:18090</ap.grp.gmar.ipaddress>
+
+            </properties>
+            <build>
+                <filters>
+                    <filter>src/build/profile-cfg-filter/conf-${env}.properties</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+
+
+         <!--gxg测试环境-->
+        <profile>
+            <id>bscsvr-intertest</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>devtest</env>
+                <!-- 应用系统参数信息 -->
+                <ap.jdbc.grpitsp.url>jdbc:oracle:thin:@10.128.90.53:1521:smrhdb2</ap.jdbc.grpitsp.url>
+                <ap.jdbc.grpitsp.username>ITSP_APPSM_GXG</ap.jdbc.grpitsp.username>
+                <ap.jdbc.grpitsp.password>Shzp_Wdgc#1949</ap.jdbc.grpitsp.password>
+                <ap.jdbc.grpmeta.url>jdbc:oracle:thin:@10.128.90.53:1521:smrhdb2</ap.jdbc.grpmeta.url>
+                <ap.jdbc.grpmeta.username>ITSP_APPSM_GXG</ap.jdbc.grpmeta.username>
+                <ap.jdbc.grpmeta.password>Shzp_Wdgc#1949</ap.jdbc.grpmeta.password>
+                <ap.jdbc.grpcent.url>jdbc:oracle:thin:@10.128.90.54:1521:smrhdb2</ap.jdbc.grpcent.url>
+                <ap.jdbc.grpcent.username>gmar_jz</ap.jdbc.grpcent.username>
+                <ap.jdbc.grpcent.password>Shzp_Wdgc#1949</ap.jdbc.grpcent.password>
+                <ap.jdbc.grpmatt.url>jdbc:oracle:thin:@10.128.90.53:1521:smrhdb2</ap.jdbc.grpmatt.url>
+                <ap.jdbc.grpmatt.username>itsp_appsw_gxg</ap.jdbc.grpmatt.username>
+                <ap.jdbc.grpmatt.password>Shzp_Wdgc#1949</ap.jdbc.grpmatt.password>
+                <ap.jdbc.grpia.url>jdbc:oracle:thin:@10.128.90.53:1521:smrhdb2</ap.jdbc.grpia.url>
+                <ap.jdbc.grpia.username>itsp_appdx_gxg</ap.jdbc.grpia.username>
+                <ap.jdbc.grpia.password>Shzp_Wdgc#1949</ap.jdbc.grpia.password>
+                <ap.druid.initialSize>50</ap.druid.initialSize>
+                <ap.druid.druid.minIdle>50</ap.druid.druid.minIdle>
+                <ap.druid.maxActive>280</ap.druid.maxActive>
+                <ap.druid.maxWait>60000</ap.druid.maxWait>
+                <ap.limit.time.zgorder>7</ap.limit.time.zgorder>
+                <ap.limit.time.alterorder>7</ap.limit.time.alterorder>
+                <ap.limit.time.examineorder>7</ap.limit.time.examineorder>
+                <ap.validation.result.maxsize.zg>10</ap.validation.result.maxsize.zg>
+                <ap.codemix.ip>10.128.90.56</ap.codemix.ip>
+                <ap.codemix.port>10217</ap.codemix.port>
+
+                <ap.codemix.server.domainName>smrhinterfatest1.mss.ctc.com</ap.codemix.server.domainName>
+                <ap.mss.verifyfile.path>/gmar/verify-files/gxg</ap.mss.verifyfile.path>
+                <ap.mss.verifyfile>verify-test</ap.mss.verifyfile>
+                <ap.gmar.checknotnull></ap.gmar.checknotnull>
+                <ap.updatepwd.procedure></ap.updatepwd.procedure>
+                <!--<ap.referer.urlPattern.gf>^http://10\.140\.9\.15:81/msscpmis/construct/proj(Acctchg|FinalAcct)Action\.do\?value\(act\)=list&amp;value\((chg|bill)type\)=\w+&amp;value\(currMenid\)=\d{3}_\d{5}_\d{7}$</ap.referer.urlPattern.gf>-->
+                <ap.referer.urlPattern.gf></ap.referer.urlPattern.gf>
+                <ap.gstdsvc.shardingid>1</ap.gstdsvc.shardingid>
+                <ap.prov.domainId>45</ap.prov.domainId>
+                <ap.prov.areacode>10</ap.prov.areacode>
+                <ap.gstdsvc.shardingid>0</ap.gstdsvc.shardingid>
+                <ap.prov.bgblflag>0</ap.prov.bgblflag>
+                <ap.file.startDir>/smrh/gxg</ap.file.startDir>
+                <ap.file.tempDir>/smrh/gxg/tmpfile</ap.file.tempDir>
+                <!-- 远程文件拷贝 -->
+                <ap.gmar.scp.user>xjx</ap.gmar.scp.user>
+                <ap.gmar.scp.password>xjx@2016</ap.gmar.scp.password>
+                <ap.gmar.scp.port>5151</ap.gmar.scp.port>
+                <!--是否通知省内卡实闭环 1.通知 0.不通知-->
+                <ap.gmar.notice>1</ap.gmar.notice>
+                <!--卡实闭环oip注册服务编码-->
+                <ap.isvc.oip.servcode>41.3001.ksqueryServ.SynReq</ap.isvc.oip.servcode>
+                <!--卡实闭环oip的注册地址-->
+                <ap.isvc.oip.commurl>http://10.128.88.20:7070/oip/proxy?ProtocolType=002&amp;bizsectype=009</ap.isvc.oip.commurl>
+                <!--省统一库资源信息查询接口服务编码-->
+                <ap.prov.getres.servcode></ap.prov.getres.servcode>
+                <!--集团统一库资源信息查询接口服务编码-->
+                <ap.grp.getres.servcode></ap.grp.getres.servcode>
+                <!-- 集中省份domain -->
+                <ap.gmar.grp.provs></ap.gmar.grp.provs>
+                <!-- 混合省份domian -->
+                <ap.gmar.priv.provs></ap.gmar.priv.provs>
+                <ap.uploadFile.maxFileSize>50</ap.uploadFile.maxFileSize>
+                <ap.prov.bindModel>ResourceIdBindMaterielIdModel</ap.prov.bindModel>
+                <ap.prov.istestmaterial>1</ap.prov.istestmaterial>
+                <ap.itsm.singleLoginUrl>http://10.128.86.200:7001/SingleSignOn</ap.itsm.singleLoginUrl>
+                <ap.itsm.needSingleLoginUrl>http://10.128.86.199:7001/SingleSignOn</ap.itsm.needSingleLoginUrl>
+                <!-- 综合查询上传资源数据查询 -->
+                <ap.prov.syDataSyncWeb>https://www.baidu.com/</ap.prov.syDataSyncWeb>
+                <!--是否管理闲置资源 1.管理 0.不管理-->
+                <ap.bps.isManager>0</ap.bps.isManager>
+                <!--是否切换新的资源与物料绑定界面 1 新页面 0 原来界面 -->
+                <ap.prov.isTree>0</ap.prov.isTree>
+                <!-- 交资优化分省配置 1 交资优化上线 0交资优化恢复原来界面-->
+                <ap.prov.presentOptimization>1</ap.prov.presentOptimization>
+                <!-- 预转固通知单接口分省配置 1 试点-->
+                <ap.prov.zgOrderBefore>1</ap.prov.zgOrderBefore>
+                <!-- 判断是否修改资源测管道段的计算逻辑：1 修改 -->
+                <ap.prov.ismatlength>0</ap.prov.ismatlength>
+                <!--判断是否增加新环节，0.不增加，1.增加物料与资源映射环节-->
+                <ap.prov.isaddprocess>1</ap.prov.isaddprocess>
+                <!--分省配置 0:否； 1【交资表：判断是否做主数据校验，校验逻辑】 机房（基站） -->
+                <ap.prov.isornotProvinceId>1</ap.prov.isornotProvinceId>
+                <!--<ap.bps.processDefName>com.sinovate.ngrms.workflow.mar.2_5_net2storemngidle</ap.bps.processDefName>-->
+                <ap.bps.processDefName>com.sinovate.ngrms.workflow.mar.2_6_net2storenotmngidle</ap.bps.processDefName>
+                <!--页面集成系统url正则样式（三码集中）-->
+                <ap.flt.prov.sanma.refererUrl>^(http://10\.128\.90\.56:10208/gcodemix/.*)|(http://10\.128\.90\.56:10217/gcodemix/.*)$</ap.flt.prov.sanma.refererUrl>
+                <ap.matter.weburl>http://10.128.90.61:12008/giamweb/provLoginAuth/matHandler</ap.matter.weburl>
+                <!--redis中心-->
+                <ap.flt.redis.host>10.128.90.60</ap.flt.redis.host>
+                <ap.flt.redis.port>61379</ap.flt.redis.port>
+                <ap.flt.redis.password></ap.flt.redis.password>
+                <ap.flt.redis.maxIdle>100</ap.flt.redis.maxIdle>
+                <ap.flt.redis.maxActive>300</ap.flt.redis.maxActive>
+                <ap.flt.redis.maxWait>1000</ap.flt.redis.maxWait>
+                <ap.flt.redis.testOnBorrow>true</ap.flt.redis.testOnBorrow>
+                <ap.flt.redis.timeout>100000</ap.flt.redis.timeout>
+                <!--服务器主机地址-->
+                <ap.localHost.ip>10.128.90.60</ap.localHost.ip>
+                <ap.grp.gmar.ipaddress>http://10.128.90.55:18090</ap.grp.gmar.ipaddress>
+            </properties>
+            <build>
+                <filters>
+                    <filter>src/build/profile-cfg-filter/conf-${env}.properties</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+
+        <!-- 生产环境 -->
+        <profile>
+            <id>bscsvr-production</id>
+            <!--<activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>-->
+            <properties>
+                <env>production</env>
+                <!-- 应用系统参数信息 -->
+                <ap.jdbc.grpitsp.url>jdbc:oracle:thin:@(description=(address_list= (address=(host=smrhdata5) (protocol=tcp)(port=3436))(address=(host=smrhdata6)(protocol=tcp) (port=3436)) (load_balance=off)(failover=on))(connect_data=(service_name= rmdt03pr))(SERVER=DEDICATED))</ap.jdbc.grpitsp.url>
+                <ap.jdbc.grpitsp.username>itsp_appsm_xjx</ap.jdbc.grpitsp.username>
+                <ap.jdbc.grpitsp.password>Appsm_xjx#123456</ap.jdbc.grpitsp.password>
+                <ap.jdbc.grpmeta.url>jdbc:oracle:thin:@(description=(address_list= (address=(host=smrhdata5) (protocol=tcp)(port=3436))(address=(host=smrhdata6)(protocol=tcp) (port=3436)) (load_balance=off)(failover=on))(connect_data=(service_name= rmdt03pr))(SERVER=DEDICATED))</ap.jdbc.grpmeta.url>
+                <ap.jdbc.grpmeta.username>itsp_appsm_xjx</ap.jdbc.grpmeta.username>
+                <ap.jdbc.grpmeta.password>Appsm_xjx#123456</ap.jdbc.grpmeta.password>
+                <ap.jdbc.grpcent.url>jdbc:oracle:thin:@(description=(address_list= (address=(host=ossracall01) (protocol=tcp)(port=3436))(address=(host=ossracall02)(protocol=tcp) (port=3436)) (load_balance=off)(failover=on))(connect_data=(service_name= rmintpr))(SERVER=DEDICATED))</ap.jdbc.grpcent.url>
+                <ap.jdbc.grpcent.username>gmar_jz</ap.jdbc.grpcent.username>
+                <ap.jdbc.grpcent.password>jz3211</ap.jdbc.grpcent.password>
+
+                <ap.jdbc.grpia.url>jdbc:oracle:thin:@10.128.90.213:3436:gmar</ap.jdbc.grpia.url>
+                <ap.jdbc.grpia.username>smrh_xjx_ineffi</ap.jdbc.grpia.username>
+                <ap.jdbc.grpia.password>smrh_xjx_ineffi</ap.jdbc.grpia.password>
+
+                <ap.druid.initialSize>50</ap.druid.initialSize>
+                <ap.druid.druid.minIdle>50</ap.druid.druid.minIdle>
+                <ap.druid.maxActive>280</ap.druid.maxActive>
+                <ap.druid.maxWait>60000</ap.druid.maxWait>
+                <ap.limit.time.zgorder>7</ap.limit.time.zgorder>
+                <ap.limit.time.alterorder>7</ap.limit.time.alterorder>
+                <ap.limit.time.examineorder>7</ap.limit.time.examineorder>
+                <ap.validation.result.maxsize.zg>10</ap.validation.result.maxsize.zg>
+                <ap.codemix.ip>10.128.88.35</ap.codemix.ip>
+                <ap.codemix.port>18080</ap.codemix.port>
+                <ap.mss.verifyfile>verify-prod</ap.mss.verifyfile>
+                <ap.codemix.server.domainName>ossxj.mss.ctc.com</ap.codemix.server.domainName>
+                <ap.gmar.checknotnull>zzQybm#区域编码,zzQxgs#区县分公司</ap.gmar.checknotnull>
+                <ap.prov.bgblflag>0</ap.prov.bgblflag>
+                <ap.prov.istestmaterial>0</ap.prov.istestmaterial>
+                <ap.updatepwd.procedure>pkg_create_or_refresh_mv.sp_refresh_mv(1)</ap.updatepwd.procedure>
+                <!--<ap.referer.urlPattern.gf>^http://10\.140\.9\.15:81/msscpmis/construct/proj(Acctchg|FinalAcct)Action\.do\?value\(act\)=list&amp;value\((chg|bill)type\)=\w+&amp;value\(currMenid\)=\d{3}_\d{5}_\d{7}$</ap.referer.urlPattern.gf>-->
+                <ap.referer.urlPattern.gf></ap.referer.urlPattern.gf>
+                <ap.gstdsvc.shardingid>1</ap.gstdsvc.shardingid>
+                <ap.prov.domainId>65</ap.prov.domainId>
+                <ap.prov.areacode>20</ap.prov.areacode>
+                <ap.file.startDir>/gmar/gcdm-inter/gsxs</ap.file.startDir>
+                <ap.file.tempDir></ap.file.tempDir>
+                <!-- 远程文件拷贝 -->
+                <ap.gmar.scp.user></ap.gmar.scp.user>
+                <ap.gmar.scp.password></ap.gmar.scp.password>
+                <ap.gmar.scp.port>1234</ap.gmar.scp.port>
+                <!--是否通知省内卡实闭环  1.通知   0.不通知-->
+                <ap.gmar.notice>1</ap.gmar.notice>
+                <!--卡实闭环oip注册服务编码-->
+                <ap.isvc.oip.servcode>41.3001.ksqueryServ.SynReq</ap.isvc.oip.servcode>
+                <!--卡实闭环oip的注册地址-->
+                <ap.isvc.oip.commurl>http://10.128.88.20:7070/oip/proxy?ProtocolType=002&amp;bizsectype=009</ap.isvc.oip.commurl>
+                <!--省统一库资源信息查询接口服务编码-->
+                <ap.prov.getres.servcode></ap.prov.getres.servcode>
+                <!--集团统一库资源信息查询接口服务编码-->
+                <ap.grp.getres.servcode></ap.grp.getres.servcode>
+                <!-- 集中省份domain -->
+                <ap.gmar.grp.provs></ap.gmar.grp.provs>
+                <!-- 混合省份domian -->
+                <ap.gmar.priv.provs></ap.gmar.priv.provs>
+                <!-- 交资优化分省配置  1  交资优化上线   0交资优化恢复原来界面-->
+                <ap.prov.presentOptimization>1</ap.prov.presentOptimization>
+                <!-- 判断是否修改资源测管道段的计算逻辑：1 修改 -->
+                <ap.prov.ismatlength>0</ap.prov.ismatlength>
+                <!-- 预转固通知单接口分省配置  1 试点-->
+                <ap.prov.zgOrderBefore>1</ap.prov.zgOrderBefore>
+                <ap.uploadFile.maxFileSize>50</ap.uploadFile.maxFileSize>
+                <ap.prov.bindModel>ResourceIdBindMaterielIdModel</ap.prov.bindModel>
+                <ap.itsm.singleLoginUrl>http://10.128.86.200:7001/SingleSignOn</ap.itsm.singleLoginUrl>
+                <ap.itsm.needSingleLoginUrl>http://10.128.86.199:7001/SingleSignOn</ap.itsm.needSingleLoginUrl>
+                <!-- 综合查询上传资源数据查询 -->
+                <ap.prov.syDataSyncWeb>https://www.baidu.com/</ap.prov.syDataSyncWeb>
+                <!--是否管理闲置资源   1.管理  0.不管理-->
+                <ap.bps.isManager>0</ap.bps.isManager>
+                <!--判断是否增加新环节，0.不增加，1.增加物料与资源映射环节-->
+                <ap.prov.isaddprocess>0</ap.prov.isaddprocess>
+                <!-- 交资优化分省配置  1  交资优化上线   0交资优化恢复原来界面-->
+                <ap.prov.presentOptimization>1</ap.prov.presentOptimization>
+                <!-- 判断是否修改资源测管道段的计算逻辑：1 修改 -->
+                <ap.prov.ismatlength>0</ap.prov.ismatlength>
+                <!-- 预转固通知单接口分省配置  1 试点-->
+                <ap.prov.zgOrderBefore>1</ap.prov.zgOrderBefore>
+                <ap.bps.processDefName>com.sinovate.ngrms.workflow.mar.2_5_net2storemngidle</ap.bps.processDefName>
+                <!--<ap.bps.processDefName>com.sinovate.ngrms.workflow.mar.2_6_net2storenotmngidle</ap.bps.processDefName>-->
+                <!--页面集成系统url正则样式（三码集中）-->
+                <ap.flt.prov.sanma.refererUrl>^(http://10\.128\.90\.56:10208/gcodemix/.*)|(http://10\.128\.90\.56:10217/gcodemix/.*)$</ap.flt.prov.sanma.refererUrl>
+                <!--redis中心-->
+                <ap.flt.redis.host>10.128.90.60</ap.flt.redis.host>
+                <ap.flt.redis.port>61379</ap.flt.redis.port>
+                <ap.flt.redis.password></ap.flt.redis.password>
+                <ap.flt.redis.maxIdle>100</ap.flt.redis.maxIdle>
+                <ap.flt.redis.maxActive>300</ap.flt.redis.maxActive>
+                <ap.flt.redis.maxWait>1000</ap.flt.redis.maxWait>
+                <ap.flt.redis.testOnBorrow>true</ap.flt.redis.testOnBorrow>
+                <ap.flt.redis.timeout>100000</ap.flt.redis.timeout>
+                <!--<ap.flt.redis.database>1</ap.flt.redis.database>-->
+                <!--服务器主机地址-->
+                <ap.localHost.ip>10.128.90.60</ap.localHost.ip>
+                <ap.grp.gmar.ipaddress>http://10.128.90.55:18090</ap.grp.gmar.ipaddress>
+            </properties>
+            <build>
+                <filters>
+                    <filter>src/build/profile-cfg-filter/conf-${env}.properties</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+
+
+    </profiles>
+</project>

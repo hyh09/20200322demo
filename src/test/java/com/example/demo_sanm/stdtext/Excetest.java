@@ -161,6 +161,9 @@ public class Excetest {
      */
     private void columnHidden(Excel4Java e4j, String sheetName, int i, Integer sfdx,boolean isConfirm){
         ExcelSheet sheet = e4j.getBook().getSheet(sheetName);
+        sheet.setColumnHidden(0,true);
+
+        sheet.setColumnHidden(1,true);
         //从A列开始
         for(int j = 44; j < 80; j++) {
             sheet.setColumnHidden(j,true);

@@ -105,8 +105,9 @@ select *  from  DM_STAFF  dm   where  dm.ACCOUNT='45140137@GX';
 update   DM_STAFF   dm  set  dm.PASSWORD='9eb133f6a3921b1af47eedb7ba87c86a' where  dm.ACCOUNT='45000644@GX';
 
 
+Wjgz_edc537
 
-
+Xbtx_wsx528
 
 -----------------交资
 
@@ -131,3 +132,5 @@ select *  from  MM_SPEC_ATTRIBUTE  ms  where  ms.table_code='EE_ORDERITEM_ASSETD
 -------------2020年软件交资的表：
 select *  from  PM_MONITOR_SYS_DICT  pt   where  pt.THE_KEY='ANKT_REMOVE';---集中的数据库
 
+---实物省份配置
+select *  from PM_MONITOR_SYS_DICT pt1  where  pt1.DOMAIN='Material_Domain';---集中库
